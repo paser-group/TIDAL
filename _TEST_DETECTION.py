@@ -96,5 +96,23 @@ class TestInvalidIPDetection( unittest.TestCase ):
         self.assertEqual(oracle_value, len(res_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )          
 
 
+
+class TestHTTPDetection( unittest.TestCase ):
+
+    def testTrueInsecureHTTP1(self):     
+        oracle_value = 4
+        scriptName   = _TEST_CONSTANTS.parsing_resource1 
+        dic_         = parser.loadYAML( scriptName )
+        res_dic      = detector.getInsecureHTTPCount ( dic_  )
+        self.assertEqual(oracle_value, len(res_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )  
+
+    def testTrueInsecureHTTP2(self):     
+        oracle_value = 1
+        scriptName   = _TEST_CONSTANTS.default_port_script6 
+        dic_         = parser.loadYAML( scriptName )
+        res_dic      = detector.getInsecureHTTPCount ( dic_  )
+        self.assertEqual(oracle_value, len(res_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )  
+        
+
 if __name__ == '__main__':
     unittest.main()

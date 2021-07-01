@@ -46,3 +46,6 @@ VALID_CONFIG_DEFAULT         = 'VALID_CONFIG_SAMPLE_PLACEHOLDER'
 YUM_KW                       = 'yum'
 DUMMY_ASCII                  = 0
 ALLOWABLE_TYPES              = [ bool, int, str ]
+ALLOWABLE_INSECURE_HTTP_STRS = [ HTTP_PATTERN ] 
+REPO_STRS                    = ['.dmg', '.rpm', '.tzr.gz', '.tgz', '.zip', '.tar', '.rar']
+UNALLOWED_HTTP_STRS          = ['.org', '.edu'] + REPO_STRS 
