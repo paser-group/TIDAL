@@ -28,3 +28,12 @@ HTTPS_DEFAULT_PORT_VAL       = 443
 HTTPS_KEYWORD                = 'HTTPS'
 MONGO_DEFAULT_PORT_VAL       = 27017 
 MONGO_KEYWORD                = 'MONGO'
+
+
+FILE_READ_MODE               = 'r'
+NEWLINE_CONSTANT             = '\n'
+COMMENT_SYMBOL               = '#'
+CWE_SUSP_COMMENT_LIST        = ['hack', 'fixme', 'later', 'todo', 'to-do', 'bug'  ]
+DEBUG_KW                     = 'debug' 
+NULL_SYMBOL                  = ''
+WHITESPACE_SYMBOL            = ' '

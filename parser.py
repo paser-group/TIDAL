@@ -67,6 +67,19 @@ def getValsFromKey(dict_, target, list_holder  ):
                         getValsFromKey(ls, target, list_holder)
 
 
+def getContentAsList(path2File):
+    data = None 
+    with open(path2File, constants.FILE_READ_MODE) as file_:
+        try:
+            data = file_.read()
+        except UnicodeDecodeError as err_:
+            data = constants.NULL_SYMBOL
+            print( str( err_ ) )
+    data_ls = data.split(constants.NEWLINE_CONSTANT) 
+    return data_ls 
+
+
+
 
 if __name__=='__main__':
     test_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/misc/gce-federation/files/pacman-service.yaml'

@@ -62,7 +62,16 @@ def getDefaultPortCount( yaml_content_dic ):
 
 
 
-
+def getSuspComments( file_ ):  
+    comment_ls    =  []
+    data_as_ls    =  parser.getContentAsList( file_ )  
+    comment_as_ls = [z.split( constants.COMMENT_SYMBOL )[1:] for z in data_as_ls if (constants.COMMENT_SYMBOL in z)  ] 
+    for comment_item in comment_as_ls:
+        comment   = constants.WHITESPACE_SYMBOL.join( comment_item  )
+        comment   = comment.lower() 
+        if(any(x_ in comment for x_ in constants.CWE_SUSP_COMMENT_LIST )) and ( constants.DEBUG_KW not in comment ) :
+            comment_ls.append(  comment )
+    return comment_ls  
 
 
 def scanSingleScriptForAllTypes( script_path ):
@@ -74,6 +83,11 @@ def scanSingleScriptForAllTypes( script_path ):
     elif ( isinstance(  yamL_ds, dict)  ):
         # print( yamL_ds )
         port_res_dic = getDefaultPortCount( yamL_ds )
+    '''
+    Let us detect suspicious comments 
+    '''
+    susp_comments  = getSuspComments( script_path )
+    print(susp_comments)
     
 
 
@@ -85,5 +99,6 @@ if __name__=='__main__':
         # test_ports_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/laincloud@lain/playbooks/roles/config/defaults/main.yaml'
         # fp_ports_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/vmware-ansible/playbooks/roles/heketi-install/tasks/main.yaml'
 
-        test_ports_yaml = '_TEST_ARTIFACTS/pacman.default.port2.yaml'
-        scanSingleScriptForAllTypes( test_ports_yaml )
+        test_comments_yaml = '_TEST_ARTIFACTS/roles.tp.default.port.yaml'
+        test_comments_yaml = '_TEST_ARTIFACTS/conf.satperf.yaml'
+        scanSingleScriptForAllTypes( test_comments_yaml )

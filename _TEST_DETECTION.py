@@ -57,5 +57,20 @@ class TestDefaultPortDetection( unittest.TestCase ):
         res_dic      = detector.getDefaultPortCount( yaml_as_dict )
         self.assertEqual(oracle_value, len(res_dic) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )                          
 
+class TestSuspiciousCommentDetection( unittest.TestCase ):
+
+    def testTrueSusp1(self):     
+        oracle_value = 2
+        scriptName   = _TEST_CONSTANTS.default_port_script5 
+        res_ls       = detector.getSuspComments( scriptName )
+        self.assertEqual(oracle_value, len(res_ls) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )  
+
+    def testFalseSusp1(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.parsing_resource1  
+        res_ls       = detector.getSuspComments( scriptName )
+        self.assertEqual(oracle_value, len(res_ls) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )  
+
+
 if __name__ == '__main__':
     unittest.main()
