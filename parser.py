@@ -49,12 +49,34 @@ def getKeyRecursively(  dict_, list2hold,  depth_ = 0  ) :
                 list2hold.append( (key_, depth_) )                
 
 
+def getValsFromKey(dict_, target, list_holder  ):
+    '''
+    If you give a key, then this function gets the corresponding values 
+    Multiple values are returned if there are keys with the same name  
+    '''    
+    if ( isinstance( dict_, dict ) ):
+        for key, value in dict_.items():
+            # print( key, len(key) , target, len( target ), value  )
+            if key == target:
+                list_holder.append( value )
+            else: 
+                if isinstance(value, dict):
+                    getValsFromKey(value, target, list_holder)
+                elif isinstance(value, list):
+                    for ls in value:
+                        getValsFromKey(ls, target, list_holder)
+
+
+
 if __name__=='__main__':
-    # test_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/misc/gce-federation/files/pacman-service.yaml'
+    test_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/misc/gce-federation/files/pacman-service.yaml'
     # test_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/satutils.yaml'
-    test_yaml  = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/conf/satperf.yaml'
+    # test_yaml  = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/conf/satperf.yaml'
     the_dic   = loadYAML( test_yaml )
     print( the_dic )
     lis_      = [] 
     getKeyRecursively(the_dic, lis_)
-    print(  lis_   )
+    # print(  lis_   )
+    val_list = [] 
+    getValsFromKey( the_dic, 'spec', val_list )
+    print( val_list )
