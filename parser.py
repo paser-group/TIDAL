@@ -79,6 +79,18 @@ def getContentAsList(path2File):
     return data_ls 
 
 
+def getValuesRecursively(  dict_   ) :
+    '''
+    gives you ALL values in a dictionary 
+    '''
+    if  isinstance(dict_, dict) :
+        for val_ in dict_.values():
+            yield from getValuesRecursively(val_) 
+    elif isinstance(dict_, list):
+        for v_ in dict_:
+            yield from getValuesRecursively(v_)
+    else: 
+        yield dict_
 
 
 if __name__=='__main__':

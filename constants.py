@@ -37,3 +37,12 @@ CWE_SUSP_COMMENT_LIST        = ['hack', 'fixme', 'later', 'todo', 'to-do', 'bug'
 DEBUG_KW                     = 'debug' 
 NULL_SYMBOL                  = ''
 WHITESPACE_SYMBOL            = ' '
+
+
+QUOTE_SYMBOL                 = "'"
+IP_ADDRESS_PATTERN           = '0.0.0.0'
+HTTP_PATTERN                 = 'http://'
+VALID_CONFIG_DEFAULT         = 'VALID_CONFIG_SAMPLE_PLACEHOLDER' 
+YUM_KW                       = 'yum'
+DUMMY_ASCII                  = 0
+ALLOWABLE_TYPES              = [ bool, int, str ]

@@ -72,5 +72,29 @@ class TestSuspiciousCommentDetection( unittest.TestCase ):
         self.assertEqual(oracle_value, len(res_ls) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )  
 
 
+class TestInvalidIPDetection( unittest.TestCase ):
+
+    def testTrueInvalidIP1(self):     
+        oracle_value = 2
+        scriptName   = _TEST_CONSTANTS.default_port_script5 
+        dic_         = parser.loadYAML( scriptName )
+        res_dic      = detector.getInvalidIPCount ( dic_  )
+        self.assertEqual(oracle_value, len(res_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )  
+
+    def testTrueInvalidIP2(self):     
+        oracle_value = 1
+        scriptName   = _TEST_CONSTANTS.inavlid_ip_script1 
+        dic_         = parser.loadYAML( scriptName )
+        res_dic      = detector.getInvalidIPCount ( dic_  )
+        self.assertEqual(oracle_value, len(res_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )  
+
+    def testTrueInvalidIP3(self):     
+        oracle_value = 2
+        scriptName   = _TEST_CONSTANTS.inavlid_ip_script2 
+        dic_         = parser.loadYAML( scriptName )
+        res_dic      = detector.getInvalidIPCount ( dic_  )
+        self.assertEqual(oracle_value, len(res_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )          
+
+
 if __name__ == '__main__':
     unittest.main()
