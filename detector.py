@@ -83,6 +83,10 @@ def sanitizeConfigVals(config_data):
             valid_config_data = config_data.replace(constants.QUOTE_SYMBOL, constants.NULL_SYMBOL)
         elif(  constants.HTTP_PATTERN in config_data ):
             valid_config_data = config_data.replace(constants.WHITESPACE_SYMBOL, constants.NULL_SYMBOL)   
+        elif(  constants.HTTPS_PATTERN in config_data ):
+            valid_config_data = config_data.replace(constants.WHITESPACE_SYMBOL, constants.NULL_SYMBOL)   
+        elif(  constants.VAR_REFF_PATTERN in config_data ):
+            valid_config_data = config_data.replace(constants.WHITESPACE_SYMBOL, constants.NULL_SYMBOL)   
     return valid_config_data  
 
 def getASCIIValues(config_data):
@@ -137,7 +141,37 @@ def getEmptyPasswordCount(yaml_dict):
     return res_dic
 
 
+def getSimilarDepthKeys(all_keys , depth):
+    lis2ret = [] 
+    for k_, v_ in all_keys.items(): 
+        if depth == v_:
+            lis2ret.append( k_  )
+    return lis2ret
 
+
+def getIntegViolationCount( yaml_dic ):
+    res_dic  , counter = {} , 0 
+    all_keys = []
+    parser.getKeyRecursively(yaml_dic, all_keys)
+    the_keys = {x_[0]:x_[1] for x_ in all_keys} 
+    for key_, depth  in the_keys.items():
+        if( any( str_ in key_ for str_ in constants.INTEG_KW_LIST ) ):
+            key_vals = [] 
+            parser.getValsFromKey(yaml_dic, key_, key_vals )
+            if ( constants.NO_KEYWORD in key_vals ) or (False in key_vals) or (0 in key_vals):
+                target_depth  = depth 
+                similar_keys  =  getSimilarDepthKeys( the_keys, target_depth  ) 
+                for k_ in similar_keys: 
+                    vals_of_simialr_keys = [] 
+                    parser.getValsFromKey( yaml_dic, k_, vals_of_simialr_keys )
+                    for similar_key_value in vals_of_simialr_keys: 
+                        # print( key_, k_, similar_key_value , type(similar_key_value) ) 
+                        similar_key_value = sanitizeConfigVals( similar_key_value ) 
+                        if ( any( z_  in similar_key_value for z_ in constants.REPO_STRS_V1 ) or any( z_  in similar_key_value for z_ in constants.REPO_STRS_V2 )  ) and ( (constants.HTTP_PATTERN in similar_key_value) or ( constants.HTTPS_PATTERN in similar_key_value) or ( constants.VAR_REFF_PATTERN in similar_key_value ) ):
+                            counter +=1 
+                            res_dic[counter] = ( key_, key_vals, k_, similar_key_value )
+    # print( res_dic )
+    return res_dic
 
 def scanSingleScriptForAllTypes( script_path ):
     yamL_ds  = parser.loadYAML( script_path  )
@@ -148,12 +182,14 @@ def scanSingleScriptForAllTypes( script_path ):
             ip_res_dic   = getInvalidIPCount( dic )
             http_res_dic = getInsecureHTTPCount( dic )
             empty_pwd_dic= getEmptyPasswordCount( dic )
+            no_integ_dic = getIntegViolationCount ( dic )
     elif ( isinstance(  yamL_ds, dict)  ):
         # print( yamL_ds )
         port_res_dic = getDefaultPortCount( yamL_ds )
         ip_res_dic   = getInvalidIPCount( yamL_ds )
         http_res_dic = getInsecureHTTPCount( yamL_ds )
-        empty_pwd_dic= getEmptyPasswordCount( yamL_ds )        
+        empty_pwd_dic= getEmptyPasswordCount( yamL_ds )  
+        no_integ_dic = getIntegViolationCount ( yamL_ds )              
     '''
     Let us detect suspicious comments 
     '''
@@ -183,5 +219,7 @@ if __name__=='__main__':
 
         # test_empty_pwd_yml  = '_TEST_ARTIFACTS/fp.empty.password.yaml'
         # test_empty_pwd_yml = '_TEST_ARTIFACTS/fp2.empty.pwd.yaml'
-        test_empty_pwd_yml = '_TEST_ARTIFACTS/fp3.empty.pwd.yaml'
-        scanSingleScriptForAllTypes( test_empty_pwd_yml ) 
+        # test_empty_pwd_yml = '_TEST_ARTIFACTS/fp3.empty.pwd.yaml'
+
+        test_no_integ = '_TEST_ARTIFACTS/no.integ3.yaml'
+        scanSingleScriptForAllTypes( test_no_integ ) 

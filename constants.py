@@ -42,12 +42,18 @@ WHITESPACE_SYMBOL            = ' '
 QUOTE_SYMBOL                 = "'"
 IP_ADDRESS_PATTERN           = '0.0.0.0'
 HTTP_PATTERN                 = 'http://'
+HTTPS_PATTERN                = 'https://'
 VALID_CONFIG_DEFAULT         = 'VALID_CONFIG_SAMPLE_PLACEHOLDER' 
 YUM_KW                       = 'yum'
 DUMMY_ASCII                  = 0
 ALLOWABLE_TYPES              = [ bool, int, str ]
 ALLOWABLE_INSECURE_HTTP_STRS = [ HTTP_PATTERN ] 
-REPO_STRS                    = ['.dmg', '.rpm', '.tzr.gz', '.tgz', '.zip', '.tar', '.rar']
-UNALLOWED_HTTP_STRS          = ['.org', '.edu'] + REPO_STRS 
+REPO_STRS_V1                 = ['.dmg', '.rpm', '.tzr.gz', '.tgz', '.zip', '.tar', '.rar']
+REPO_STRS_V2                 = ['mirrors.fedoraproject.org', 'repos.', 'releases/', '_repository_base']
+UNALLOWED_HTTP_STRS          = ['.org', '.edu'] + REPO_STRS_V1 
 
 VALID_PASSWORD_STRS          = ['password', 'passwd']
+
+INTEG_KW_LIST                = ['gpgcheck', 'check_sha', 'checksum', 'checksha'] 
+NO_KEYWORD                   = 'no'
+VAR_REFF_PATTERN             = '{{' 

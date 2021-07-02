@@ -145,5 +145,49 @@ class TestEmptyPassDetection( unittest.TestCase ):
         res_dic      = detector.getEmptyPasswordCount ( dic_  )
         self.assertEqual(oracle_value, len(res_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )                 
 
+
+
+class TestNoIntegDetection( unittest.TestCase ):
+    def testNoInteg1(self):     
+        oracle_value = 1
+        scriptName   = _TEST_CONSTANTS.tp_no_integ_yaml1
+        lis_dic_     = parser.loadYAML( scriptName ) ## gives a list of dicts 
+        dic_         = lis_dic_[0] ## get data for the first dict 
+        res_dic      = detector.getIntegViolationCount ( dic_  )
+        # print(res_dic)
+        self.assertEqual(oracle_value, len(res_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testNoInteg2(self):     
+        oracle_value = 1
+        scriptName   = _TEST_CONSTANTS.tp_no_integ_yaml2 
+        lis_dic_     = parser.loadYAML( scriptName ) ## gives a list of dicts 
+        dic_         = lis_dic_[0] ## get data for the first dict 
+        res_dic      = detector.getIntegViolationCount ( dic_  )
+        self.assertEqual(oracle_value, len(res_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testNoInteg3(self):     
+        oracle_value = 1
+        scriptName   = _TEST_CONSTANTS.tp_no_integ_yaml3
+        lis_dic_     = parser.loadYAML( scriptName ) ## gives a list of dicts 
+        dic_         = lis_dic_[-3] ## get data for the first dict 
+        res_dic      = detector.getIntegViolationCount ( dic_  )
+        self.assertEqual(oracle_value, len(res_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testNoIntegVal1(self):     
+        oracle_value = _TEST_CONSTANTS.tp_value_url
+        scriptName   = _TEST_CONSTANTS.tp_no_integ_yaml2 
+        lis_dic_     = parser.loadYAML( scriptName ) ## gives a list of dicts 
+        dic_         = lis_dic_[0] ## get data for the first dict 
+        res_dic      = detector.getIntegViolationCount ( dic_  )
+        self.assertEqual(oracle_value, res_dic[1][-1] ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testNoIntegVal2(self):     
+        oracle_value = _TEST_CONSTANTS.tp_var_reff_value 
+        scriptName   = _TEST_CONSTANTS.tp_no_integ_yaml3
+        lis_dic_     = parser.loadYAML( scriptName ) ## gives a list of dicts 
+        dic_         = lis_dic_[-3] ## get data for the first dict 
+        res_dic      = detector.getIntegViolationCount ( dic_  )
+        self.assertEqual(oracle_value, res_dic[1][-1] ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
 if __name__ == '__main__':
     unittest.main()
