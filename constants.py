@@ -52,8 +52,15 @@ REPO_STRS_V1                 = ['.dmg', '.rpm', '.tzr.gz', '.tgz', '.zip', '.tar
 REPO_STRS_V2                 = ['mirrors.fedoraproject.org', 'repos.', 'releases/', '_repository_base']
 UNALLOWED_HTTP_STRS          = ['.org', '.edu'] + REPO_STRS_V1 
 
-VALID_PASSWORD_STRS          = ['password', 'passwd']
+VALID_PASSWORD_STRS          = ['password', 'passwd', 'pass', 'rootpw']
+INVALID_PASSWORD_STRS        = ['vault_', 'vaulted_'] 
+VALID_USERNAME_STRS          = ['user']
+INVALID_USERNAME_STRS        = ['become_user', 'remote_user', 'vault_', 'vaulted_']
+VALID_PRIVATE_STRS           = ['pvt', 'priv']
+VALID_KEY_STRS               = ['cert', 'key', 'rsa', 'secret', 'ssl']
+INVALID_KEY_STRS             = ['vault_', 'vaulted_'] 
 
 INTEG_KW_LIST                = ['gpgcheck', 'check_sha', 'checksum', 'checksha'] 
 NO_KEYWORD                   = 'no'
 VAR_REFF_PATTERN             = '{{' 
+

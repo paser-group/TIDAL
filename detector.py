@@ -87,6 +87,8 @@ def sanitizeConfigVals(config_data):
             valid_config_data = config_data.replace(constants.WHITESPACE_SYMBOL, constants.NULL_SYMBOL)   
         elif(  constants.VAR_REFF_PATTERN in config_data ):
             valid_config_data = config_data.replace(constants.WHITESPACE_SYMBOL, constants.NULL_SYMBOL)   
+        elif(  (isinstance( config_data, str )) and ( len(config_data) > 0 ) ):
+            valid_config_data = config_data.replace(constants.WHITESPACE_SYMBOL, constants.NULL_SYMBOL)   
     return valid_config_data  
 
 def getASCIIValues(config_data):
@@ -128,7 +130,8 @@ def getEmptyPasswordCount(yaml_dict):
     counter  = 0
     key_lis  = [] 
     parser.getKeyRecursively( yaml_dict, key_lis )
-    for k_  in key_lis :
+    only_keys= [ z_[0] for z_ in key_lis ]
+    for k_  in only_keys :
         if ( any( z_ in k_ for z_ in constants.VALID_PASSWORD_STRS ) ): 
             val_holder = [] 
             parser.getValsFromKey(yaml_dict, k_, val_holder ) 
@@ -173,6 +176,76 @@ def getIntegViolationCount( yaml_dic ):
     # print( res_dic )
     return res_dic
 
+
+def getUsernameCount( yaml_dict ):
+    res_dic  = {} 
+    counter  = 0
+    key_lis  = [] 
+    parser.getKeyRecursively( yaml_dict, key_lis )
+    only_keys= [T_[0] for T_ in key_lis] 
+    for k_  in only_keys :
+        # print( k_  )
+        if ( any( z_ in k_ for z_ in constants.VALID_USERNAME_STRS ) ) and ( any( y_ in k_ for y_ in constants.INVALID_USERNAME_STRS ) == False  ): 
+            val_holder = [] 
+            parser.getValsFromKey(yaml_dict, k_, val_holder ) 
+            # print( k_, val_holder )
+            for unfiltered_config_val in val_holder:
+                if isinstance( unfiltered_config_val, str ):
+                    config_val = sanitizeConfigVals( unfiltered_config_val )
+                    if (isinstance(config_val, str  ) ) and ( len(config_val) > 0  ) : 
+                        counter += 1 
+                        res_dic[ counter ] = ( k_, config_val )
+    # print( res_dic )
+    return res_dic    
+
+def getPasswordCount( yaml_dict ):
+    res_dic  = {} 
+    counter  = 0
+    key_lis  = [] 
+    parser.getKeyRecursively( yaml_dict, key_lis )
+    only_keys= [T_[0] for T_ in key_lis] 
+    for k_  in only_keys :
+        if ( any( z_ in k_ for z_ in constants.VALID_PASSWORD_STRS ) ) and ( any( x_ in k_ for x_ in constants.INVALID_PASSWORD_STRS ) == False ) : 
+            val_holder = [] 
+            parser.getValsFromKey(yaml_dict, k_, val_holder ) 
+            for unfiltered_config_val in val_holder:
+                if isinstance( unfiltered_config_val, str ):
+                    config_val = sanitizeConfigVals( unfiltered_config_val )
+                    if (isinstance(config_val, str  ) ) and ( len(config_val) > 0  ) : 
+                        counter += 1 
+                        res_dic[ counter ] = ( k_, config_val )
+    # print( res_dic )
+    return res_dic    
+
+
+
+def getPrivKeyCount( yaml_dict ):
+    res_dic  = {} 
+    counter  = 0
+    key_lis  = [] 
+    parser.getKeyRecursively( yaml_dict, key_lis )
+    only_keys= [T_[0] for T_ in key_lis] 
+    for k_  in only_keys :
+        if ( any( z_ in k_ for z_ in constants.VALID_PRIVATE_STRS ) ) and ( any( t_ in k_ for t_ in constants.VALID_KEY_STRS ) ) and ( any( x_ in k_ for x_ in constants.INVALID_KEY_STRS ) == False ) : 
+            val_holder = [] 
+            parser.getValsFromKey(yaml_dict, k_, val_holder ) 
+            for unfiltered_config_val in val_holder:
+                if isinstance( unfiltered_config_val, str ):
+                    config_val = sanitizeConfigVals( unfiltered_config_val )
+                    if (isinstance(config_val, str  ) ) and ( len(config_val) > 0  ) : 
+                        counter += 1 
+                        res_dic[ counter ] = ( k_, config_val )
+    # print( res_dic )
+    return res_dic    
+def getSecretCount(  yam_dict ):
+    user_res_dic = getUsernameCount( yam_dict )
+    pass_res_dic = getPasswordCount( yam_dict )
+    key_res_dic  = getPrivKeyCount( yam_dict )
+    res_lis      = [ user_res_dic, pass_res_dic, key_res_dic ]
+    # print(res_lis)
+    return res_lis
+
+
 def scanSingleScriptForAllTypes( script_path ):
     yamL_ds  = parser.loadYAML( script_path  )
     if( isinstance(yamL_ds, list) ):
@@ -183,13 +256,15 @@ def scanSingleScriptForAllTypes( script_path ):
             http_res_dic = getInsecureHTTPCount( dic )
             empty_pwd_dic= getEmptyPasswordCount( dic )
             no_integ_dic = getIntegViolationCount ( dic )
+            secret_dic_ls= getSecretCount( dic )
     elif ( isinstance(  yamL_ds, dict)  ):
         # print( yamL_ds )
-        port_res_dic = getDefaultPortCount( yamL_ds )
-        ip_res_dic   = getInvalidIPCount( yamL_ds )
-        http_res_dic = getInsecureHTTPCount( yamL_ds )
-        empty_pwd_dic= getEmptyPasswordCount( yamL_ds )  
-        no_integ_dic = getIntegViolationCount ( yamL_ds )              
+        port_res_dic     = getDefaultPortCount( yamL_ds )
+        ip_res_dic       = getInvalidIPCount( yamL_ds )
+        http_res_dic     = getInsecureHTTPCount( yamL_ds )
+        empty_pwd_dic    = getEmptyPasswordCount( yamL_ds )  
+        no_integ_dic     = getIntegViolationCount ( yamL_ds )              
+        secret_dic_ls    = getSecretCount( yamL_ds )
     '''
     Let us detect suspicious comments 
     '''
@@ -221,5 +296,31 @@ if __name__=='__main__':
         # test_empty_pwd_yml = '_TEST_ARTIFACTS/fp2.empty.pwd.yaml'
         # test_empty_pwd_yml = '_TEST_ARTIFACTS/fp3.empty.pwd.yaml'
 
-        test_no_integ = '_TEST_ARTIFACTS/no.integ3.yaml'
-        scanSingleScriptForAllTypes( test_no_integ ) 
+        # test_no_integ = '_TEST_ARTIFACTS/no.integ3.yaml'
+
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/aws-ansible/playbooks/roles/non-atomic-docker-storage-setup/tasks/main.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/laincloud@lain/playbooks/roles/node-change-labels/tasks/main.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/gcp/ansible/playbooks/roles/ssl-certificate-delete/defaults/main.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/gcp/ansible/playbooks/roles/ssl-certificate/defaults/main.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/vmware-ansible/playbooks/roles/cloud-provider-setup/tasks/main.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-tools/ansible/playbooks/adhoc/metrics_setup/files/metrics.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/common/roles/scalelab-nic-cleanup/tasks/main.yaml'
+        # test_secret_fp_yaml  = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/containerized/roles/install-openshift-oc/tasks/main.yaml'
+        # test_secret_fp_yaml  = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/docker/docker-purge-storage.yaml'
+        # test_secret_fp_yaml  = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/vmware-ansible/playbooks/ocp-install.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/kvm-hosts/check.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/kvm-hosts/host.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/kvm-hosts/install-vms.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/monitoring/grafana.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/monitoring/graphite.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/remove-satellite.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/satellite-remove-hosts.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/client-scripts.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/roles/client-scripts/tasks/main.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/capsules.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/satellite-populate.yaml'
+        test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/tests/puppet-big-test.yaml'
+
+        # test_secret_tp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/conf/satperf.yaml'
+
+        scanSingleScriptForAllTypes( test_secret_fp_yaml ) 

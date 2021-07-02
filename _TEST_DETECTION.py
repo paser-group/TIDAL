@@ -154,7 +154,6 @@ class TestNoIntegDetection( unittest.TestCase ):
         lis_dic_     = parser.loadYAML( scriptName ) ## gives a list of dicts 
         dic_         = lis_dic_[0] ## get data for the first dict 
         res_dic      = detector.getIntegViolationCount ( dic_  )
-        # print(res_dic)
         self.assertEqual(oracle_value, len(res_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
     def testNoInteg2(self):     
@@ -188,6 +187,100 @@ class TestNoIntegDetection( unittest.TestCase ):
         dic_         = lis_dic_[-3] ## get data for the first dict 
         res_dic      = detector.getIntegViolationCount ( dic_  )
         self.assertEqual(oracle_value, res_dic[1][-1] ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+
+class TestTPSecretDetection( unittest.TestCase ):
+    def testTP_SecretDict(self):     
+        oracle_value = 3
+        scriptName   = _TEST_CONSTANTS.tp_secret_yaml
+        dic_         = parser.loadYAML( scriptName ) 
+        lis_dic      = detector.getSecretCount ( dic_  )
+        self.assertEqual(oracle_value, len(lis_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testTP_Usernames(self):     
+        oracle_value = 3
+        scriptName   = _TEST_CONSTANTS.tp_secret_yaml
+        dic_         = parser.loadYAML( scriptName ) 
+        lis_dic      = detector.getSecretCount ( dic_  )
+        self.assertEqual(oracle_value, len(lis_dic[0] ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testTP_Password1(self):     
+        oracle_value = 4
+        scriptName   = _TEST_CONSTANTS.tp_secret_yaml
+        dic_         = parser.loadYAML( scriptName ) 
+        lis_dic      = detector.getSecretCount ( dic_  )
+        self.assertEqual(oracle_value, len(lis_dic[1] ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testTP_Password2(self):     
+        oracle_value = _TEST_CONSTANTS.root_pwd_str
+        scriptName   = _TEST_CONSTANTS.tp_secret_yaml
+        dic_         = parser.loadYAML( scriptName ) 
+        lis_dic      = detector.getSecretCount ( dic_  )
+        self.assertEqual(oracle_value, lis_dic[1][4][0]  ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testTP_PrivateKey1(self):     
+        oracle_value = 2
+        scriptName   = _TEST_CONSTANTS.tp_secret_yaml
+        dic_         = parser.loadYAML( scriptName ) 
+        lis_dic      = detector.getSecretCount ( dic_  )
+        self.assertEqual(oracle_value, len(lis_dic[2] ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testTP_PrivateKey2(self):     
+        oracle_value = _TEST_CONSTANTS.var_pattern_str
+        scriptName   = _TEST_CONSTANTS.tp_secret_yaml
+        dic_         = parser.loadYAML( scriptName ) 
+        lis_dic      = detector.getSecretCount ( dic_  )
+        self.assertTrue(oracle_value in lis_dic[2][1][-1]  ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testTP_PrivateKey3(self):     
+        oracle_value = _TEST_CONSTANTS.sample_var_name 
+        scriptName   = _TEST_CONSTANTS.tp_secret_yaml
+        dic_         = parser.loadYAML( scriptName ) 
+        lis_dic      = detector.getSecretCount ( dic_  )
+        self.assertEqual(oracle_value, lis_dic[2][2][0]  ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )         
+
+class TestFPSecretDetection( unittest.TestCase ):
+    def testFP_SecretDict1(self):     
+        oracle_value = 3
+        scriptName   = _TEST_CONSTANTS.fp_secret_yaml1 
+        dic_         = parser.loadYAML( scriptName ) 
+        lis_dic      = detector.getSecretCount ( dic_  )
+        self.assertEqual(oracle_value, len(lis_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testFP_SecretDict2(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.fp_secret_yaml2 
+        dic_         = parser.loadYAML( scriptName ) 
+        lis_dic      = detector.getSecretCount ( dic_  )
+        self.assertEqual(oracle_value, len(lis_dic[0] ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testFP_SecretDict3(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.fp_secret_yaml3
+        dic_         = parser.loadYAML( scriptName ) 
+        lis_dic      = detector.getSecretCount ( dic_  )
+        self.assertEqual(oracle_value, len(lis_dic[1] ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testFP_SecretDict4(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.fp_secret_yaml4
+        dic_         = parser.loadYAML( scriptName ) 
+        lis_dic      = detector.getSecretCount ( dic_  )
+        self.assertEqual(oracle_value, len(lis_dic[2] ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+    def testFP_SecretDict5(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.fp_secret_yaml5
+        dic_         = parser.loadYAML( scriptName ) 
+        lis_dic      = detector.getSecretCount ( dic_  )
+        self.assertEqual(oracle_value, len(lis_dic[0] ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testFP_SecretDict6(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.fp_secret_yaml6
+        dic_         = parser.loadYAML( scriptName ) 
+        lis_dic      = detector.getSecretCount ( dic_  )
+        self.assertEqual(oracle_value, len(lis_dic[1] ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
 
 if __name__ == '__main__':
     unittest.main()
