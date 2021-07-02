@@ -112,7 +112,38 @@ class TestHTTPDetection( unittest.TestCase ):
         dic_         = parser.loadYAML( scriptName )
         res_dic      = detector.getInsecureHTTPCount ( dic_  )
         self.assertEqual(oracle_value, len(res_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )  
-        
+
+    def testTrueInsecureHTTP3(self):     
+        oracle_value = 2
+        scriptName   = _TEST_CONSTANTS.insecure_http_script1  
+        dic_         = parser.loadYAML( scriptName )
+        res_dic      = detector.getInsecureHTTPCount ( dic_  )
+        self.assertEqual(oracle_value, len(res_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )          
+
+
+
+class TestEmptyPassDetection( unittest.TestCase ):
+
+    def testFPEmpty1(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.fp_empty_pass_yaml1
+        dic_         = parser.loadYAML( scriptName )
+        res_dic      = detector.getEmptyPasswordCount ( dic_  )
+        self.assertEqual(oracle_value, len(res_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testFPEmpty2(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.fp_empty_pass_yaml2
+        dic_         = parser.loadYAML( scriptName )
+        res_dic      = detector.getEmptyPasswordCount ( dic_  )
+        self.assertEqual(oracle_value, len(res_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testFPEmpty3(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.fp_empty_pass_yaml3
+        dic_         = parser.loadYAML( scriptName )
+        res_dic      = detector.getEmptyPasswordCount ( dic_  )
+        self.assertEqual(oracle_value, len(res_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )                 
 
 if __name__ == '__main__':
     unittest.main()

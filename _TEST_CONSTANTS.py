@@ -22,3 +22,9 @@ default_port_script6 = '_TEST_ARTIFACTS/roles.fp.default.port.yaml'
 
 inavlid_ip_script1   = '_TEST_ARTIFACTS/1.invalid.ip.yaml'
 inavlid_ip_script2   = '_TEST_ARTIFACTS/2.invalid.ip.yaml'
+
+insecure_http_script1= '_TEST_ARTIFACTS/http.calico.main.yaml'     
+
+fp_empty_pass_yaml1  = '_TEST_ARTIFACTS/fp.empty.password.yaml'
+fp_empty_pass_yaml2  = '_TEST_ARTIFACTS/fp2.empty.pwd.yaml'
+fp_empty_pass_yaml3  = '_TEST_ARTIFACTS/fp3.empty.pwd.yaml'

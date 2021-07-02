@@ -7,6 +7,8 @@
 
 /Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/laincloud@lain/playbooks/roles/config/defaults/main.yaml
 /Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/vmware-ansible/playbooks/roles/haproxy-server/defaults/main.yaml 
+/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/azure-ansible/3.5/ansibledeployocp/playbooks/roles/azure-deploy/tasks/main.yaml
+
 
 ### INSECURE HTTTP 
 
