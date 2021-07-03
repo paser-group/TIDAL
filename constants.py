@@ -37,6 +37,9 @@ CWE_SUSP_COMMENT_LIST        = ['hack', 'fixme', 'later', 'todo', 'to-do', 'bug'
 DEBUG_KW                     = 'debug' 
 NULL_SYMBOL                  = ''
 WHITESPACE_SYMBOL            = ' '
+SLASH_SYMBOL                 = '/'
+YAML_EXTENSION               = 'yaml'
+YML_EXTENSION                = 'yml'
 
 
 QUOTE_SYMBOL                 = "'"
@@ -63,8 +66,13 @@ INVALID_KEY_STRS             = ['vault_', 'vaulted_']
 INTEG_KW_LIST                = ['gpgcheck', 'check_sha', 'checksum', 'checksha'] 
 NO_KEYWORD                   = 'no'
 VAR_REFF_PATTERN             = '{{' 
+OTHER_VAR_REFF_PATTERN       = '}}'
 
 PLAY_NAME_CONSTANT           = 'name'
 DUMMY_LIST_INDEX             = 0
 SOURCE_TYPE_PLAY             = 'PLAY'
 SOURCE_TYPE_NON_PLAY         = 'NON_PLAY'
+PRINT_COLON_HELPER           = ':::'
+INVALID_YAML_KEY_INDEX_STR   = '0'
+KATELLO_KEYWORD              = 'katello'
+ANSIBLE_LOOKUP_KEYWORD       = 'lookup(' 

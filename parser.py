@@ -25,7 +25,7 @@ def loadYAML( script_ ):
         try:
             dict2ret =   yaml.safe_load(yml_content) 
         except yaml.YAMLError as exc:
-            print( constants.YAML_SKIPPING_TEXT  )    
+            print( constants.NULL_SYMBOL  )    
     return dict2ret 
 
 def getKeyRecursively(  dict_, list2hold,  depth_ = 0  ) :

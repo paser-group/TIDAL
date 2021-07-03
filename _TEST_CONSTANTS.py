@@ -56,3 +56,13 @@ VIP_KEYWORD          = 'vip'
 SSH_PORT             = '22'
 
 graph_secret_yaml    = '_TEST_ARTIFACTS/graph.playbooks.cleanup.crs.yaml'
+
+cross_tp_secret_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/conf/satperf.yaml'
+org_dir              = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/'
+KATELLO_USER         = 'katello_user' 
+KATELLO_PASS         = 'katello_password'
+NOKATELLO_MESSAGE    = 'NO KATELLO STUFF !!! '
+RHSM_USER            = 'rhsm_user' 
+RHSM_MESSAGE         = 'RHSM_USER in list !!!'
+RHSM_PASS            = 'rhsm_pass' 
+RHSM_P_MESSAGE       = 'NO RHSM_PASS in list !!!'
