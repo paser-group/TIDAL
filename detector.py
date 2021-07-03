@@ -5,6 +5,7 @@ Module to detect security weaknesses
 '''
 import parser 
 import constants 
+import graph 
 
 
 def getDefaultPortCount( yaml_content_dic ):
@@ -105,10 +106,12 @@ def getInvalidIPCount( yaml_dict ):
     all_val_lis    = parser.getValuesRecursively( yaml_dict )
     counter        = 0 
     for val_ in all_val_lis:
-        val_ascii    =   getASCIIValues( val_ )
-        if val_ascii == 330 or val_ascii == 425:  
-            counter          += 1
-            res_dic_to_ret[counter] = val_ 
+        val_ = sanitizeConfigVals( val_ )
+        if( constants.IP_ADDRESS_PATTERN in val_ ):
+            val_ascii    =   getASCIIValues( val_ )
+            if val_ascii == 330 or val_ascii == 425:  
+                counter          += 1
+                res_dic_to_ret[counter] = val_ 
     # print(res_dic_to_ret) 
     return res_dic_to_ret  
 
@@ -116,6 +119,7 @@ def getInsecureHTTPCount( yaml_dict ):
     res_dic_to_ret = {}
     all_val_lis    = parser.getValuesRecursively( yaml_dict )
     counter        = 0 
+    # print( all_val_lis )
     for val_ in all_val_lis:
         val_filtered    =   sanitizeConfigVals( val_  ) 
         # print( val_filtered )
@@ -248,6 +252,7 @@ def getSecretCount(  yam_dict ):
 
 def scanSingleScriptForAllTypes( script_path ):
     yamL_ds  = parser.loadYAML( script_path  )
+    susp_comments, port_res_dic , ip_res_dic , http_res_dic , empty_pwd_dic , no_integ_dic, secret_dic_ls = [], {}, {}, {}, {}, {}, []
     if( isinstance(yamL_ds, list) ):
         for dic in yamL_ds:
             # print( dic )
@@ -257,6 +262,18 @@ def scanSingleScriptForAllTypes( script_path ):
             empty_pwd_dic= getEmptyPasswordCount( dic )
             no_integ_dic = getIntegViolationCount ( dic )
             secret_dic_ls= getSecretCount( dic )
+            '''
+            Once done with pattern matching we need to check if instances are 
+            used by a play 
+            '''
+            http_usage_di= graph.getPlayUsage( dic, http_res_dic )
+            inv_ip_use_di= graph.getPlayUsage( dic, ip_res_dic )              
+            emp_pwd_use_d= graph.getPlayUsage( dic, empty_pwd_dic )  
+            port_use_dic = graph.getPlayUsage( dic, port_res_dic )
+            no_int_use_d = graph.getPlayUsage( dic, no_integ_dic )
+            secret_use_ls= [ graph.getSecretPlayUsage(dic, secret_dic_ls[0]), graph.getSecretPlayUsage(dic, secret_dic_ls[1]), graph.getSecretPlayUsage(dic, secret_dic_ls[2]) ]
+
+
     elif ( isinstance(  yamL_ds, dict)  ):
         # print( yamL_ds )
         port_res_dic     = getDefaultPortCount( yamL_ds )
@@ -265,11 +282,22 @@ def scanSingleScriptForAllTypes( script_path ):
         empty_pwd_dic    = getEmptyPasswordCount( yamL_ds )  
         no_integ_dic     = getIntegViolationCount ( yamL_ds )              
         secret_dic_ls    = getSecretCount( yamL_ds )
+        '''
+        Once done with pattern matching we need to check if instances are 
+        used by a play 
+        '''
+        http_usage_di= graph.getPlayUsage( yamL_ds, http_res_dic )      
+        inv_ip_use_di= graph.getPlayUsage( yamL_ds, ip_res_dic )  
+        emp_pwd_use_d= graph.getPlayUsage( yamL_ds, empty_pwd_dic )  
+        port_use_dic = graph.getPlayUsage( yamL_ds, port_res_dic )
+        no_int_use_d = graph.getPlayUsage( yamL_ds , no_integ_dic )        
+        secret_use_ls= [ graph.getSecretPlayUsage(yamL_ds, secret_dic_ls[0]), graph.getSecretPlayUsage(yamL_ds, secret_dic_ls[1]), graph.getSecretPlayUsage(yamL_ds, secret_dic_ls[2]) ]
     '''
-    Let us detect suspicious comments 
+    Let us also detect suspicious comments 
     '''
     susp_comments  = getSuspComments( script_path )
     # print(susp_comments)
+
 
 
     
@@ -289,12 +317,6 @@ if __name__=='__main__':
         # test_invalid_ip_yml= '_TEST_ARTIFACTS/roles.tp.default.port.yaml'
         # test_invalid_ip_yml= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/carlosthe19916@openshift-ansible/playbooks/openstack/openshift-cluster/files/heat_stack.yaml'
         # test_invalid_ip_yml= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/playbooks/openstack/openshift-cluster/files/heat_stack.yaml'
-
-        # test_http_yml = '_TEST_ARTIFACTS/conf.satperf.yaml'
-
-        # test_empty_pwd_yml  = '_TEST_ARTIFACTS/fp.empty.password.yaml'
-        # test_empty_pwd_yml = '_TEST_ARTIFACTS/fp2.empty.pwd.yaml'
-        # test_empty_pwd_yml = '_TEST_ARTIFACTS/fp3.empty.pwd.yaml'
 
         # test_no_integ = '_TEST_ARTIFACTS/no.integ3.yaml'
 
@@ -319,8 +341,25 @@ if __name__=='__main__':
         # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/roles/client-scripts/tasks/main.yaml'
         # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/capsules.yaml'
         # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/satellite-populate.yaml'
-        test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/tests/puppet-big-test.yaml'
+        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/tests/puppet-big-test.yaml'
 
-        # test_secret_tp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/conf/satperf.yaml'
+        # test_secret_tp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/vmware-ansible/playbooks/cleanup-crs.yaml'
+        test_secret_tp_yaml   = '_TEST_ARTIFACTS/tp.secret.cleanup.yaml'
 
-        scanSingleScriptForAllTypes( test_secret_fp_yaml ) 
+        # test_http_yml = '_TEST_ARTIFACTS/conf.satperf.yaml'
+        # test_http_yml = '_TEST_ARTIFACTS/http.calico.main.yaml'
+
+        # test_invalid_ip_yml= '_TEST_ARTIFACTS/1.invalid.ip.yaml'
+        # test_invalid_ip_yml= '_TEST_ARTIFACTS/2.invalid.ip.yaml'
+        # test_invalid_ip_yml= '_TEST_ARTIFACTS/roles.tp.default.port.yaml'
+
+        # test_empty_pwd_yml  = '_TEST_ARTIFACTS/fp.empty.password.yaml'
+        # test_empty_pwd_yml = '_TEST_ARTIFACTS/fp2.empty.pwd.yaml'
+        # test_empty_pwd_yml = '_TEST_ARTIFACTS/fp3.empty.pwd.yaml'
+
+        # test_ports_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/laincloud@lain/playbooks/roles/config/defaults/main.yaml'
+        # test_ports_yaml   = '_TEST_ARTIFACTS/roles.tp.default.port.yaml'
+
+        # test_no_integ = '_TEST_ARTIFACTS/no.integ3.yaml'
+
+        scanSingleScriptForAllTypes( test_secret_tp_yaml ) 

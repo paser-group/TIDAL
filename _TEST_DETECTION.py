@@ -190,7 +190,7 @@ class TestNoIntegDetection( unittest.TestCase ):
 
 
 class TestTPSecretDetection( unittest.TestCase ):
-    def testTP_SecretDict(self):     
+    def testTP_SecretSingleDict(self):     
         oracle_value = 3
         scriptName   = _TEST_CONSTANTS.tp_secret_yaml
         dic_         = parser.loadYAML( scriptName ) 
@@ -237,7 +237,22 @@ class TestTPSecretDetection( unittest.TestCase ):
         scriptName   = _TEST_CONSTANTS.tp_secret_yaml
         dic_         = parser.loadYAML( scriptName ) 
         lis_dic      = detector.getSecretCount ( dic_  )
-        self.assertEqual(oracle_value, lis_dic[2][2][0]  ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )         
+        self.assertEqual(oracle_value, lis_dic[2][2][0]  ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )    
+
+    def testTP_SecretDictList1(self):     
+        oracle_value = _TEST_CONSTANTS.root_user_str 
+        scriptName   = _TEST_CONSTANTS.another_tp_secret_y
+        lis_dic_     = parser.loadYAML( scriptName ) 
+        res_dic      = detector.getSecretCount ( lis_dic_[0]  )
+        self.assertEqual(oracle_value, res_dic[0][1][1] ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )              
+
+    def testTP_SecretDictList2(self):     
+        oracle_value = 1 
+        scriptName   = _TEST_CONSTANTS.another_tp_secret_y
+        lis_dic_     = parser.loadYAML( scriptName ) 
+        res_dic      = detector.getSecretCount ( lis_dic_[0]  )
+        self.assertEqual(oracle_value, len( res_dic[0] ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )              
+
 
 class TestFPSecretDetection( unittest.TestCase ):
     def testFP_SecretDict1(self):     

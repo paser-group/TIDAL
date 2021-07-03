@@ -92,6 +92,26 @@ def getValuesRecursively(  dict_   ) :
     else: 
         yield dict_
 
+def getKeysBasedOnValue(dic_, value):
+  '''
+  If you give a value, then this function gets the corresponding key, and the keys that call the key 
+  i.e. the whole hierarchy
+  Returns None if no value is found  
+  '''
+  if dic_ == value:
+    return [dic_]
+  elif isinstance(dic_, dict):
+    for k, v in dic_.items():
+      p = getKeysBasedOnValue(v, value)
+      if p:
+        return [k] + p
+  elif isinstance(dic_, list):
+    lst = dic_
+    for i in range(len(lst)):
+      p = getKeysBasedOnValue(lst[i], value)
+      if p:
+        return [str(i)] + p
+
 
 if __name__=='__main__':
     test_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/misc/gce-federation/files/pacman-service.yaml'
