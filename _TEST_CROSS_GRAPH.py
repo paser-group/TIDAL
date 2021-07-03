@@ -122,6 +122,25 @@ class TestCrossGraphs( unittest.TestCase ):
         files        = np.unique( [ name[2] for name in dic_values ] )
         self.assertEqual(oracle_value, len( files ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
+    def testCrossSecret11(self):     
+        scriptName   = _TEST_CONSTANTS.cross_tp_secret_yaml 
+        yaml_as_dict = parser.loadYAML( scriptName ) 
+        secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
+        secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
+        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1])
+        dic_values   = cross_pass_di.values() 
+        file_names   = np.unique( [ name[2] for name in dic_values ] )
+        self.assertTrue( _TEST_CONSTANTS.cross_existence_yaml1 not  in file_names ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.FILE_MISSING_MESSAGE  )         
+
+    def testCrossSecret12(self):     
+        scriptName   = _TEST_CONSTANTS.cross_tp_secret_yaml 
+        yaml_as_dict = parser.loadYAML( scriptName ) 
+        secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
+        secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
+        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1])
+        dic_values   = cross_pass_di.values() 
+        file_names   = np.unique( [ name[2] for name in dic_values ] )
+        self.assertTrue( _TEST_CONSTANTS.cross_existence_yaml2 in file_names ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.FILE_MISSING_MESSAGE  )         
 
 if __name__ == '__main__':
     unittest.main() 
