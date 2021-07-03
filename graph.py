@@ -151,7 +151,7 @@ def getCrossReffs(org_dir, script_path, prelim_graph_dic):
                                 res_cnt += 1
                                 '''
                                 Structure of result dicts 
-                                key = counter 
+                                key = counter : indicates use of the hard-coded value by a play , e.g. counter = 5 , means the value was used in 5 plays 
                                 values = (src_script, src_val, sink_script, sink_val)
                                 '''
                                 res_dic[ res_cnt ] = ( script_path, key_from_src, yaml_, ya_va  )
