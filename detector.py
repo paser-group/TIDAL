@@ -272,10 +272,12 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
             port_use_dic = graph.getPlayUsage( dic, port_res_dic )
             no_int_use_d = graph.getPlayUsage( dic, no_integ_dic )
             secret_use_ls= [ graph.getSecretPlayUsage(dic, secret_dic_ls[0]), graph.getSecretPlayUsage(dic, secret_dic_ls[1]), graph.getSecretPlayUsage(dic, secret_dic_ls[2]) ]
-            # '''
-            # We also need to do cross script taint tracking 
-            # '''
-            # graph.getCrossReffs(org_dir, script_path, secret_use_ls[0])
+            '''
+            We also need to do cross script taint tracking 
+            '''
+            cross_uname_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[0])
+            cross_passw_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[1])
+            cross_prike_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[2])  
 
     elif ( isinstance(  yamL_ds, dict)  ):
         # print( yamL_ds )
@@ -303,10 +305,10 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
         cross_passw_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[1])
         cross_prike_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[2])  
  
-        for k_, v_ in cross_uname_di.items(): 
-                print( v_[2] )
-                print( v_[1], constants.PRINT_COLON_HELPER , v_[3] )
-                print( '=' * 100  )
+        # for k_, v_ in cross_passw_di.items(): 
+        #         print( k_, v_[2] )
+        #         print( v_[1], constants.PRINT_COLON_HELPER , v_[3] )
+        #         print( '=' * 100  )
 
     '''
     Let us also detect suspicious comments 
@@ -361,7 +363,8 @@ if __name__=='__main__':
 
         # test_secret_tp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/vmware-ansible/playbooks/cleanup-crs.yaml'
         # test_secret_tp_yaml   = '_TEST_ARTIFACTS/tp.secret.cleanup.yaml'
-        test_secret_tp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/conf/satperf.yaml'
+        # test_secret_tp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/conf/satperf.yaml'
+        test_secret_tp_yaml  = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/3.9/playbooks/vars/main.yaml'
 
         # test_http_yml = '_TEST_ARTIFACTS/conf.satperf.yaml'
         # test_http_yml = '_TEST_ARTIFACTS/http.calico.main.yaml'

@@ -7,6 +7,7 @@ import parser
 import constants 
 import detector 
 import os 
+import numpy as np 
 
 def getPlayUsage( full_dic, weakness_dic ):
     res_dic = {} 
@@ -125,6 +126,7 @@ def getCrossReffs(org_dir, script_path, prelim_graph_dic):
     for counter, tuple_ in prelim_graph_dic.items():
         valu_, key_lis, _, type_ = tuple_
         # print(key_lis)
+        key_lis = np.unique( key_lis )
         if type_ == constants.SOURCE_TYPE_NON_PLAY:
             temp_script     = script_path 
             script_src_repo = temp_script.replace( org_dir, constants.NULL_SYMBOL )
@@ -138,6 +140,8 @@ def getCrossReffs(org_dir, script_path, prelim_graph_dic):
                 # print( script_path,  yaml_, key_lis  )
                 ya_di   = parser.loadYAML( yaml_ )
                 ya_vals = parser.getValuesRecursively( ya_di )
+                # print( ya_vals )
+                # print( key_lis )
                 for ya_va in ya_vals:
                     if( isinstance( ya_va, str ) ):
                         for key_ in key_lis:

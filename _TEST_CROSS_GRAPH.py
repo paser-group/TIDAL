@@ -14,7 +14,7 @@ import numpy as np
 class TestCrossGraphs( unittest.TestCase ):
 
     def testCrossSecret1(self):     
-        oracle_value = 377
+        oracle_value = 251
         scriptName   = _TEST_CONSTANTS.cross_tp_secret_yaml 
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
@@ -24,7 +24,7 @@ class TestCrossGraphs( unittest.TestCase ):
 
 
     def testCrossSecret2(self):     
-        oracle_value = 377
+        oracle_value = 251
         scriptName   = _TEST_CONSTANTS.cross_tp_secret_yaml 
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
@@ -33,7 +33,7 @@ class TestCrossGraphs( unittest.TestCase ):
         self.assertEqual(oracle_value, len( cross_pass_di ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
     def testCrossSecret3(self):     
-        oracle_value = 4
+        oracle_value = 2
         scriptName   = _TEST_CONSTANTS.cross_tp_secret_yaml 
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
