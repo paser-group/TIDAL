@@ -83,7 +83,7 @@ cross_existence_yam12= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-pe
 cross_existence_yam13= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/tests/sync-repositories.yaml'
 cross_secret_yaml_IP = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/playbooks/openstack/openshift-cluster/files/heat_stack.yaml'
 cross_invalid_ip_yaml= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/3.9/playbooks/roles/aws/tasks/routetablerule.yaml'
-
+cross_empty_pass_yaml= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/d34dh0r53@os-ansible-deployment/playbooks/roles/os_heat/files/templates/AWS_RDS_DBInstance.yaml'
 
 KEY_MISSING_MESSAGE  = ': A KEY TO EXIST !!!'
 cross_existence_key1 = 'vms_kss_os'

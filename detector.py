@@ -284,6 +284,8 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
             cross_prike_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[2])  
             # insecure HTTP 
             cross_http_di = graph.getCrossReffs( org_dir, script_path, http_usage_di )
+            # invalid ip usage 
+            cross_inv_ip_d= graph.getCrossReffs( org_dir, script_path, inv_ip_use_di )            
 
 
     elif ( isinstance(  yamL_ds, dict)  ):
@@ -316,8 +318,10 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
         cross_http_di = graph.getCrossReffs( org_dir, script_path, http_usage_di )
         # invalid ip usage 
         cross_inv_ip_d= graph.getCrossReffs( org_dir, script_path, inv_ip_use_di )
- 
-        for k_, v_ in cross_inv_ip_d.items(): 
+        # empty password usage 
+        cross_empt_p_d= graph.getCrossReffs( org_dir, script_path, emp_pwd_use_d )
+
+        for k_, v_ in cross_empt_p_d.items(): 
                 print( k_, v_[2] )
                 print( v_[1], constants.PRINT_COLON_HELPER , v_[3] )
                 print( '=' * 100  )
@@ -351,26 +355,6 @@ if __name__=='__main__':
         # test_no_integ = '_TEST_ARTIFACTS/no.integ3.yaml'
 
         # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/aws-ansible/playbooks/roles/non-atomic-docker-storage-setup/tasks/main.yaml'
-        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/laincloud@lain/playbooks/roles/node-change-labels/tasks/main.yaml'
-        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/gcp/ansible/playbooks/roles/ssl-certificate-delete/defaults/main.yaml'
-        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/gcp/ansible/playbooks/roles/ssl-certificate/defaults/main.yaml'
-        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/vmware-ansible/playbooks/roles/cloud-provider-setup/tasks/main.yaml'
-        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-tools/ansible/playbooks/adhoc/metrics_setup/files/metrics.yaml'
-        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/common/roles/scalelab-nic-cleanup/tasks/main.yaml'
-        # test_secret_fp_yaml  = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/containerized/roles/install-openshift-oc/tasks/main.yaml'
-        # test_secret_fp_yaml  = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/docker/docker-purge-storage.yaml'
-        # test_secret_fp_yaml  = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/vmware-ansible/playbooks/ocp-install.yaml'
-        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/kvm-hosts/check.yaml'
-        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/kvm-hosts/host.yaml'
-        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/kvm-hosts/install-vms.yaml'
-        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/monitoring/grafana.yaml'
-        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/monitoring/graphite.yaml'
-        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/remove-satellite.yaml'
-        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/satellite-remove-hosts.yaml'
-        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/client-scripts.yaml'
-        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/roles/client-scripts/tasks/main.yaml'
-        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/capsules.yaml'
-        # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/satellite-populate.yaml'
         # test_secret_fp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/tests/puppet-big-test.yaml'
 
         # test_secret_tp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/vmware-ansible/playbooks/cleanup-crs.yaml'
@@ -394,6 +378,6 @@ if __name__=='__main__':
 
         # test_no_integ = '_TEST_ARTIFACTS/no.integ3.yaml'
 
-        test_secret_tp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/3.9/playbooks/roles/aws/tasks/routetablerule.yaml'
+        test_secret_tp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/d34dh0r53@os-ansible-deployment/playbooks/roles/os_heat/files/templates/AWS_RDS_DBInstance.yaml'
         org_path = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/'
         scanSingleScriptForAllTypes( test_secret_tp_yaml, org_path ) 

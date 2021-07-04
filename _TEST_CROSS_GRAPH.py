@@ -353,5 +353,27 @@ class TestCrossInvalidIPGraphs( unittest.TestCase ):
         cross_ip_dic = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  ip_use_dict )
         self.assertEqual(oracle_value, len( cross_ip_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
+class TestCrossEmptyPassGraphs( unittest.TestCase ):
+
+    def testCrossEmptyPass1(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.cross_empty_pass_yaml
+        yaml_as_dict = parser.loadYAML( scriptName ) 
+        emp_pass_dic = detector.getEmptyPasswordCount( yaml_as_dict )
+        emp_use_dict = graph.getPlayUsage( yaml_as_dict,  emp_pass_dic )
+        cross_emp_dic= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  emp_use_dict )
+        self.assertEqual(oracle_value, len( cross_emp_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+
+    def testCrossEmptyPass2(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.cross_empty_pass_yaml
+        yaml_as_dict = parser.loadYAML( scriptName ) 
+        emp_pass_dic = detector.getEmptyPasswordCount( yaml_as_dict )
+        emp_use_dict = graph.getPlayUsage( yaml_as_dict,  emp_pass_dic )
+        cross_emp_dic= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  emp_use_dict )
+        files        = np.unique( [ t_[2] for t_ in cross_emp_dic.values() ] )
+        self.assertEqual(oracle_value, len( files ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
 if __name__ == '__main__':
     unittest.main() 
