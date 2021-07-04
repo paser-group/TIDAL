@@ -151,7 +151,7 @@ def getCrossReffs(org_dir, script_path, prelim_graph_dic):
                             '''
                             keys will be refernced using `{{ var_name }}` format 
                             '''
-                            if ( key_from_src in ya_va )  and ( constants.VAR_REFF_PATTERN in ya_va ) and ( constants.OTHER_VAR_REFF_PATTERN in ya_va )  :
+                            if ( key_from_src in ya_va )  and ( constants.VAR_REFF_PATTERN in ya_va ) and ( constants.OTHER_VAR_REFF_PATTERN in ya_va ) and ( any( x_ in ya_va for x_ in constants.WRONG_CROSS_KEYWORDS ) == False ) :
                                 res_cnt += 1
                                 '''
                                 Structure of result dicts 

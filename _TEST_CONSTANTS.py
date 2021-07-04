@@ -79,3 +79,10 @@ cross_existence_yaml9= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-pe
 cross_existence_yam10= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/soak-tests/daily-cv-ops.yaml'
 cross_secret_yamlX   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/3.9/playbooks/vars/main.yaml'
 cross_existence_yam11= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/3.9/playbooks/roles/aws/tasks/sshkeys.yaml'
+cross_existence_yam12= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/roles/client-content/tasks/main.yaml'
+cross_existence_yam13= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/tests/sync-repositories.yaml'
+
+
+KEY_MISSING_MESSAGE  = ': A KEY TO EXIST !!!'
+cross_existence_key1 = 'vms_kss_os'
+cross_existence_key2 = 'content_sattools_url'

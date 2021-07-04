@@ -75,4 +75,5 @@ SOURCE_TYPE_NON_PLAY         = 'NON_PLAY'
 PRINT_COLON_HELPER           = ':::'
 INVALID_YAML_KEY_INDEX_STR   = '0'
 KATELLO_KEYWORD              = 'katello'
-ANSIBLE_LOOKUP_KEYWORD       = 'lookup(' 
+ANSIBLE_LOOKUP_KEYWORD       = 'lookup('
+WRONG_CROSS_KEYWORDS         = ['default(', 'defaults', 'default.'] 

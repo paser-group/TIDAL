@@ -275,9 +275,13 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
             '''
             We also need to do cross script taint tracking 
             '''
+            # secret 
             cross_uname_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[0])
             cross_passw_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[1])
             cross_prike_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[2])  
+            # insecure HTTP 
+            cross_http_di = graph.getCrossReffs( org_dir, script_path, http_usage_di )
+
 
     elif ( isinstance(  yamL_ds, dict)  ):
         # print( yamL_ds )
@@ -300,12 +304,16 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
         '''
         We also need to do cross script taint tracking 
         '''
-        # print(  )
+        # secrets 
         cross_uname_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[0])
         cross_passw_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[1])
         cross_prike_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[2])  
+        # http usage 
+        cross_http_di = graph.getCrossReffs( org_dir, script_path, http_usage_di )
+        # invalid ip usage 
+        cross_inv_ip_d= graph.getCrossReffs( org_dir, script_path, inv_ip_use_di )
  
-        for k_, v_ in cross_prike_di.items(): 
+        for k_, v_ in cross_inv_ip_d.items(): 
                 print( k_, v_[2] )
                 print( v_[1], constants.PRINT_COLON_HELPER , v_[3] )
                 print( '=' * 100  )
@@ -363,8 +371,8 @@ if __name__=='__main__':
 
         # test_secret_tp_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/vmware-ansible/playbooks/cleanup-crs.yaml'
         # test_secret_tp_yaml   = '_TEST_ARTIFACTS/tp.secret.cleanup.yaml'
-        # test_secret_tp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/conf/satperf.yaml'
-        test_secret_tp_yaml  = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/3.9/playbooks/vars/main.yaml'
+
+        # test_secret_tp_yaml  = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/3.9/playbooks/vars/main.yaml'
 
         # test_http_yml = '_TEST_ARTIFACTS/conf.satperf.yaml'
         # test_http_yml = '_TEST_ARTIFACTS/http.calico.main.yaml'
@@ -382,5 +390,6 @@ if __name__=='__main__':
 
         # test_no_integ = '_TEST_ARTIFACTS/no.integ3.yaml'
 
+        test_secret_tp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/playbooks/openstack/openshift-cluster/files/heat_stack.yaml'
         org_path = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/'
         scanSingleScriptForAllTypes( test_secret_tp_yaml, org_path ) 
