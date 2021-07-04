@@ -305,10 +305,10 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
         cross_passw_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[1])
         cross_prike_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[2])  
  
-        # for k_, v_ in cross_passw_di.items(): 
-        #         print( k_, v_[2] )
-        #         print( v_[1], constants.PRINT_COLON_HELPER , v_[3] )
-        #         print( '=' * 100  )
+        for k_, v_ in cross_prike_di.items(): 
+                print( k_, v_[2] )
+                print( v_[1], constants.PRINT_COLON_HELPER , v_[3] )
+                print( '=' * 100  )
 
     '''
     Let us also detect suspicious comments 

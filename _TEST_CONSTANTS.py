@@ -77,3 +77,5 @@ cross_existence_yaml7= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-pe
 cross_existence_yaml8= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/tests/puppet-single-setup.yaml'
 cross_existence_yaml9= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/tests/puppet-big-test.yaml'
 cross_existence_yam10= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/soak-tests/daily-cv-ops.yaml'
+cross_secret_yamlX   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/3.9/playbooks/vars/main.yaml'
+cross_existence_yam11= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/3.9/playbooks/roles/aws/tasks/sshkeys.yaml'

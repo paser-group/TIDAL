@@ -222,6 +222,32 @@ class TestCrossGraphs( unittest.TestCase ):
         file_names   = np.unique( [ name[2] for name in dic_values ] )
         self.assertTrue( _TEST_CONSTANTS.cross_existence_yaml4 in file_names ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.FILE_MISSING_MESSAGE  )              
 
+    def testCrossSecret21(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.cross_secret_yamlX
+        yaml_as_dict = parser.loadYAML( scriptName ) 
+        secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
+        secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
+        cross_uname_d= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0])
+        self.assertEqual(  oracle_value, len( cross_uname_d ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testCrossSecret22(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.cross_secret_yamlX
+        yaml_as_dict = parser.loadYAML( scriptName ) 
+        secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
+        secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
+        cross_uname_d= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[2])
+        self.assertEqual(  oracle_value, len( cross_uname_d ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testCrossSecret23(self):     
+        oracle_value = 1
+        scriptName   = _TEST_CONSTANTS.cross_secret_yamlX
+        yaml_as_dict = parser.loadYAML( scriptName ) 
+        secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
+        secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
+        cross_pass_d = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1])
+        self.assertEqual(  oracle_value, len( cross_pass_d ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
 if __name__ == '__main__':
     unittest.main() 
