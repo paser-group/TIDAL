@@ -375,5 +375,56 @@ class TestCrossEmptyPassGraphs( unittest.TestCase ):
         files        = np.unique( [ t_[2] for t_ in cross_emp_dic.values() ] )
         self.assertEqual(oracle_value, len( files ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
+
+class TestCrossDefaultPortGraphs( unittest.TestCase ):
+
+    def testCrossDefaultPort1(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.cross_port_yaml
+        yaml_as_dict = parser.loadYAML( scriptName ) 
+        port_cnt_dic = detector.getDefaultPortCount( yaml_as_dict )
+        port_use_dict= graph.getPlayUsage( yaml_as_dict,  port_cnt_dic )
+        cross_port_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  port_use_dict )
+        self.assertEqual(oracle_value, len( cross_port_di ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testCrossDefaultPort2(self):     
+        scriptName   = _TEST_CONSTANTS.cross_port_yaml
+        yaml_as_dict = parser.loadYAML( scriptName ) 
+        port_cnt_dic = detector.getDefaultPortCount( yaml_as_dict )
+        port_use_dict= graph.getPlayUsage( yaml_as_dict,  port_cnt_dic )
+        cross_port_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  port_use_dict )
+        files        = np.unique( [x_[2] for x_ in cross_port_di.values()] )
+        self.assertTrue( _TEST_CONSTANTS.cross_existence_yaml9 not  in files ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.FILE_MISSING_MESSAGE  ) 
+
+
+class TestCrossNoIntegrityGraphs( unittest.TestCase ):
+
+    def testCrossNoIntegrity1(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.cross_no_inte_yaml1
+        yaml_as_dict = parser.loadYAML( scriptName ) 
+        inte_cnt_dic = detector.getIntegViolationCount ( yaml_as_dict )
+        inte_use_dict= graph.getNoIntegPlayUsage(  inte_cnt_dic )
+        cross_inte_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  inte_use_dict )
+        self.assertEqual(oracle_value, len( cross_inte_di ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testCrossNoIntegrity2(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.cross_no_inte_yaml2
+        yaml_as_dict = parser.loadYAML( scriptName ) 
+        inte_cnt_dic = detector.getIntegViolationCount ( yaml_as_dict )
+        inte_use_dict= graph.getNoIntegPlayUsage(  inte_cnt_dic )
+        cross_inte_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  inte_use_dict )
+        self.assertEqual(oracle_value, len( cross_inte_di ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testCrossNoIntegrity3(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.cross_no_inte_yaml3
+        yaml_as_dict = parser.loadYAML( scriptName ) 
+        inte_cnt_dic = detector.getIntegViolationCount ( yaml_as_dict )
+        inte_use_dict= graph.getNoIntegPlayUsage(  inte_cnt_dic )
+        cross_inte_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  inte_use_dict )
+        self.assertEqual(oracle_value, len( cross_inte_di ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
 if __name__ == '__main__':
     unittest.main() 

@@ -174,3 +174,11 @@ def getCrossReffs(org_dir, script_path, prelim_graph_dic):
                                 # if ( constants.PLAY_NAME_CONSTANT in keyOfValList ):
                                 #     print( yaml_,   ya_va, key_from_src , keyOfValList  )
     return res_dic 
+
+
+
+def getNoIntegPlayUsage(  weakness_dic ): 
+    res_dic = {} 
+    for counter_, values_ in weakness_dic.items():
+        res_dic[counter_] = ( values_[3]  , [ values_[2] ] , constants.DUMMY_LIST_INDEX , constants.SOURCE_TYPE_PLAY )
+    return res_dic 

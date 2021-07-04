@@ -271,7 +271,9 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
             # print( inv_ip_use_di )         
             emp_pwd_use_d= graph.getPlayUsage( dic, empty_pwd_dic )  
             port_use_dic = graph.getPlayUsage( dic, port_res_dic )
-            no_int_use_d = graph.getPlayUsage( dic, no_integ_dic )
+            no_int_use_d = graph.getNoIntegPlayUsage(  no_integ_dic )
+            # print( no_integ_dic  )
+            # print( no_int_use_d )
             secret_use_ls= [ graph.getSecretPlayUsage(dic, secret_dic_ls[0]), graph.getSecretPlayUsage(dic, secret_dic_ls[1]), graph.getSecretPlayUsage(dic, secret_dic_ls[2]) ]
             #TODO if you get a list of dicts , then check for `name` in the key list, and if that exists then all 
             # `use_dicts` will have a play , regardless of output in getPlayUsage() 
@@ -285,7 +287,13 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
             # insecure HTTP 
             cross_http_di = graph.getCrossReffs( org_dir, script_path, http_usage_di )
             # invalid ip usage 
-            cross_inv_ip_d= graph.getCrossReffs( org_dir, script_path, inv_ip_use_di )            
+            cross_inv_ip_d= graph.getCrossReffs( org_dir, script_path, inv_ip_use_di )    
+            # empty password usage 
+            cross_empt_p_d= graph.getCrossReffs( org_dir, script_path, emp_pwd_use_d )    
+            # cross port usage 
+            cross_port_p_d= graph.getCrossReffs( org_dir, script_path, port_use_dic )     
+            # cross no integrity check usage 
+            cross_int_no_d= graph.getCrossReffs( org_dir, script_path, no_int_use_d )                                   
 
 
     elif ( isinstance(  yamL_ds, dict)  ):
@@ -305,26 +313,33 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
         # print( inv_ip_use_di )
         emp_pwd_use_d= graph.getPlayUsage( yamL_ds, empty_pwd_dic )  
         port_use_dic = graph.getPlayUsage( yamL_ds, port_res_dic )
-        no_int_use_d = graph.getPlayUsage( yamL_ds , no_integ_dic )        
+        # print( port_use_dic )
+        no_int_use_d = graph.getNoIntegPlayUsage(  no_integ_dic )        
+        # print( no_int_use_d ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yamL_ds, secret_dic_ls[0]), graph.getSecretPlayUsage(yamL_ds, secret_dic_ls[1]), graph.getSecretPlayUsage(yamL_ds, secret_dic_ls[2]) ]
         '''
         We also need to do cross script taint tracking 
         '''
-        # secrets 
+        # cross secret usage 
         cross_uname_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[0])
         cross_passw_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[1])
         cross_prike_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[2])  
-        # http usage 
+        # cross http usage 
         cross_http_di = graph.getCrossReffs( org_dir, script_path, http_usage_di )
-        # invalid ip usage 
+        # cross invalid ip usage 
         cross_inv_ip_d= graph.getCrossReffs( org_dir, script_path, inv_ip_use_di )
-        # empty password usage 
+        # cross empty password usage 
         cross_empt_p_d= graph.getCrossReffs( org_dir, script_path, emp_pwd_use_d )
+        # cross port usage 
+        cross_port_p_d= graph.getCrossReffs( org_dir, script_path, port_use_dic )
+        # cross no integrity check usage 
+        cross_int_no_d= graph.getCrossReffs( org_dir, script_path, no_int_use_d )
 
-        for k_, v_ in cross_empt_p_d.items(): 
-                print( k_, v_[2] )
-                print( v_[1], constants.PRINT_COLON_HELPER , v_[3] )
-                print( '=' * 100  )
+
+    # for k_, v_ in cross_int_no_d.items(): 
+    #             print( k_, v_[2] )
+    #             print( v_[1], constants.PRINT_COLON_HELPER , v_[3] )
+    #             print( '=' * 100  )
 
     '''
     Let us also detect suspicious comments 
@@ -376,8 +391,10 @@ if __name__=='__main__':
         # test_ports_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/laincloud@lain/playbooks/roles/config/defaults/main.yaml'
         # test_ports_yaml   = '_TEST_ARTIFACTS/roles.tp.default.port.yaml'
 
-        # test_no_integ = '_TEST_ARTIFACTS/no.integ3.yaml'
+        test_no_integ = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/katello/roles/add_katello_repos/tasks/main.yaml'
 
-        test_secret_tp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/d34dh0r53@os-ansible-deployment/playbooks/roles/os_heat/files/templates/AWS_RDS_DBInstance.yaml'
+        # test_secret_tp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/d34dh0r53@os-ansible-deployment/playbooks/roles/os_heat/files/templates/AWS_RDS_DBInstance.yaml'
         org_path = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/'
-        scanSingleScriptForAllTypes( test_secret_tp_yaml, org_path ) 
+        
+        
+        scanSingleScriptForAllTypes( test_no_integ, org_path ) 
