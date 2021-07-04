@@ -267,11 +267,14 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
             used by a play 
             '''
             http_usage_di= graph.getPlayUsage( dic, http_res_dic )
-            inv_ip_use_di= graph.getPlayUsage( dic, ip_res_dic )              
+            inv_ip_use_di= graph.getPlayUsage( dic, ip_res_dic )     
+            # print( inv_ip_use_di )         
             emp_pwd_use_d= graph.getPlayUsage( dic, empty_pwd_dic )  
             port_use_dic = graph.getPlayUsage( dic, port_res_dic )
             no_int_use_d = graph.getPlayUsage( dic, no_integ_dic )
             secret_use_ls= [ graph.getSecretPlayUsage(dic, secret_dic_ls[0]), graph.getSecretPlayUsage(dic, secret_dic_ls[1]), graph.getSecretPlayUsage(dic, secret_dic_ls[2]) ]
+            #TODO if you get a list of dicts , then check for `name` in the key list, and if that exists then all 
+            # `use_dicts` will have a play , regardless of output in getPlayUsage() 
             '''
             We also need to do cross script taint tracking 
             '''
@@ -297,6 +300,7 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
         '''
         http_usage_di= graph.getPlayUsage( yamL_ds, http_res_dic )      
         inv_ip_use_di= graph.getPlayUsage( yamL_ds, ip_res_dic )  
+        # print( inv_ip_use_di )
         emp_pwd_use_d= graph.getPlayUsage( yamL_ds, empty_pwd_dic )  
         port_use_dic = graph.getPlayUsage( yamL_ds, port_res_dic )
         no_int_use_d = graph.getPlayUsage( yamL_ds , no_integ_dic )        
@@ -390,6 +394,6 @@ if __name__=='__main__':
 
         # test_no_integ = '_TEST_ARTIFACTS/no.integ3.yaml'
 
-        test_secret_tp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/playbooks/openstack/openshift-cluster/files/heat_stack.yaml'
+        test_secret_tp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/3.9/playbooks/roles/aws/tasks/routetablerule.yaml'
         org_path = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/'
         scanSingleScriptForAllTypes( test_secret_tp_yaml, org_path ) 

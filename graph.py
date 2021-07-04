@@ -120,6 +120,16 @@ def getYAMLFiles(path_to_dir):
     return valid_ 
 
 
+def checkIfValidReff( src_key, val2inspect ):
+    val_ret      = False 
+    search_term1 = constants.VAR_REFF_PATTERN + src_key + constants.OTHER_VAR_REFF_PATTERN 
+    search_term2 = constants.PLUS_SYMBOL + src_key + constants.PLUS_SYMBOL
+    val2inspect  = val2inspect.replace( constants.WHITESPACE_SYMBOL ,  constants.NULL_SYMBOL )
+    if( any( x_ in val2inspect for x_ in constants.WRONG_CROSS_KEYWORDS ) == False ) and ( ( search_term1 in val2inspect ) or (search_term2 in val2inspect )  ) :
+        val_ret = True  
+    return val_ret
+    
+
 def getCrossReffs(org_dir, script_path, prelim_graph_dic):
     res_cnt = 0 
     res_dic = {} 
@@ -151,7 +161,7 @@ def getCrossReffs(org_dir, script_path, prelim_graph_dic):
                             '''
                             keys will be refernced using `{{ var_name }}` format 
                             '''
-                            if ( key_from_src in ya_va )  and ( constants.VAR_REFF_PATTERN in ya_va ) and ( constants.OTHER_VAR_REFF_PATTERN in ya_va ) and ( any( x_ in ya_va for x_ in constants.WRONG_CROSS_KEYWORDS ) == False ) :
+                            if ( key_from_src in ya_va )  and ( constants.VAR_REFF_PATTERN in ya_va ) and ( constants.OTHER_VAR_REFF_PATTERN in ya_va ) and ( checkIfValidReff( key_from_src, ya_va ) ) :
                                 res_cnt += 1
                                 '''
                                 Structure of result dicts 

@@ -11,6 +11,7 @@ import graph
 import detector
 import numpy as np 
 
+
 class TestCrossSecretGraphs( unittest.TestCase ):
 
     def testCrossSecret1(self):     
@@ -256,6 +257,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
         cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1])
         dic_values   = cross_pass_di.values() 
+        # print( cross_pass_di )
         file_names   = np.unique( [ name[2] for name in dic_values ] )
         self.assertTrue( _TEST_CONSTANTS.cross_existence_yam11 in file_names ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.FILE_MISSING_MESSAGE  )              
 
@@ -263,7 +265,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
 class TestCrossHTTPGraphs( unittest.TestCase ):
 
     def testCrossHTTP1(self):     
-        oracle_value = 4
+        oracle_value = 3
         scriptName   = _TEST_CONSTANTS.cross_tp_secret_yaml 
         yaml_as_dict = parser.loadYAML( scriptName ) 
         http_resr_dic= detector.getInsecureHTTPCount( yaml_as_dict )
@@ -312,19 +314,44 @@ class TestCrossHTTPGraphs( unittest.TestCase ):
         cross_http_d = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  http_use_dict )
         values       = cross_http_d.values()  
         files        = np.unique( [t_[2] for t_ in values ] )
-        self.assertTrue( _TEST_CONSTANTS.cross_existence_yam13 in files  ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.KEY_MISSING_MESSAGE  ) 
+        self.assertFalse( _TEST_CONSTANTS.cross_existence_yam13 in files  ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.KEY_MISSING_MESSAGE  ) 
 
 
 class TestCrossInvalidIPGraphs( unittest.TestCase ):
 
     def testCrossInvalidIP1(self):     
-        oracle_value = 4
-        scriptName   = _TEST_CONSTANTS.cross_tp_secret_yaml 
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.cross_secret_yaml_IP 
         yaml_as_dict = parser.loadYAML( scriptName ) 
-        http_resr_dic= detector.getInsecureHTTPCount( yaml_as_dict )
-        http_use_dict= graph.getPlayUsage( yaml_as_dict,  http_resr_dic )
-        cross_http_d = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  http_use_dict )
-        self.assertEqual(oracle_value, len( cross_http_d ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+        ip_resr_dic  = detector.getInvalidIPCount ( yaml_as_dict )
+        ip_use_dict  = graph.getPlayUsage( yaml_as_dict,  ip_resr_dic )
+        cross_ip_dic = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  ip_use_dict )
+        self.assertEqual(oracle_value, len( cross_ip_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+
+    def testCrossInvalidIP2(self):     
+        oracle_value = 0 
+        scriptName   = _TEST_CONSTANTS.cross_secret_yaml_IP 
+        yaml_as_dict = parser.loadYAML( scriptName ) 
+        ip_resr_dic  = detector.getInvalidIPCount ( yaml_as_dict )
+        ip_use_dict  = graph.getPlayUsage( yaml_as_dict,  ip_resr_dic )
+        cross_ip_dic = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  ip_use_dict )
+        files        = np.unique( [c_[2] for c_ in  cross_ip_dic.values() ] )
+        self.assertEqual(oracle_value, len( files ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+
+    def testCrossInvalidIP3(self):     
+        '''
+        The test script used here includes an inavlid IP address, which is used by a play in the same script so result will 
+        be zero, as no cross references 
+        '''
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.cross_invalid_ip_yaml
+        yaml_as_dict = parser.loadYAML( scriptName ) 
+        ip_resr_dic  = detector.getInvalidIPCount ( yaml_as_dict )
+        ip_use_dict  = graph.getPlayUsage( yaml_as_dict,  ip_resr_dic )
+        cross_ip_dic = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  ip_use_dict )
+        self.assertEqual(oracle_value, len( cross_ip_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
 if __name__ == '__main__':
     unittest.main() 

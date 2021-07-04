@@ -81,6 +81,8 @@ cross_secret_yamlX   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift
 cross_existence_yam11= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/3.9/playbooks/roles/aws/tasks/sshkeys.yaml'
 cross_existence_yam12= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/satellite/roles/client-content/tasks/main.yaml'
 cross_existence_yam13= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/tests/sync-repositories.yaml'
+cross_secret_yaml_IP = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/playbooks/openstack/openshift-cluster/files/heat_stack.yaml'
+cross_invalid_ip_yaml= '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/reference-architecture/3.9/playbooks/roles/aws/tasks/routetablerule.yaml'
 
 
 KEY_MISSING_MESSAGE  = ': A KEY TO EXIST !!!'

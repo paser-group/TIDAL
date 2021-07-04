@@ -67,6 +67,7 @@ INTEG_KW_LIST                = ['gpgcheck', 'check_sha', 'checksum', 'checksha']
 NO_KEYWORD                   = 'no'
 VAR_REFF_PATTERN             = '{{' 
 OTHER_VAR_REFF_PATTERN       = '}}'
+PLUS_SYMBOL                  = '+'
 
 PLAY_NAME_CONSTANT           = 'name'
 DUMMY_LIST_INDEX             = 0
@@ -76,4 +77,4 @@ PRINT_COLON_HELPER           = ':::'
 INVALID_YAML_KEY_INDEX_STR   = '0'
 KATELLO_KEYWORD              = 'katello'
 ANSIBLE_LOOKUP_KEYWORD       = 'lookup('
-WRONG_CROSS_KEYWORDS         = ['default(', 'defaults', 'default.'] 
+WRONG_CROSS_KEYWORDS         = ['default(', 'defaults', 'default.', '_default', 'default_', '.default'] 
