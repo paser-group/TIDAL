@@ -77,4 +77,21 @@ PRINT_COLON_HELPER           = ':::'
 INVALID_YAML_KEY_INDEX_STR   = '0'
 KATELLO_KEYWORD              = 'katello'
 ANSIBLE_LOOKUP_KEYWORD       = 'lookup('
-WRONG_CROSS_KEYWORDS         = ['default(', 'defaults', 'default.', '_default', 'default_', '.default'] 
+WRONG_CROSS_KEYWORDS         = ['default(', 'defaults', 'default.', '_default', 'default_', '.default']
+
+
+RESULT_RAW_COUNT             = 'RESULT_RAW_COUNT'            
+RESULT_TP_COUNT              = 'RESULT_TP_COUNT'
+RESULT_PLAY_COUNT            = 'RESULT_PLAY_COUNT'
+RESULT_CROSS_SCRIPT_DICT     = 'RESULT_CROSS_SCRIPT_DICT'
+RESULT_USERNAME              = 'HARDCODED_USERNAME'
+RESULT_PASSWORD              = 'HARDCODED_PASSWORD'
+RESULT_PRIVATE_KEY           = 'HARDCODED_PRIVATE_KEY'
+RESULT_INVALID_IP            = 'INAVLID_IP'
+RESULT_INSECURE_HTTP         = 'INSECURE_HTTP'
+RESULT_DEFAULT_PORT          = 'DEFAULT_PORT'
+RESULT_SUSP_COMM             = 'SUSP_COMM'
+RESULT_EMPTY_PWD             = 'EMPTY_PASSWORD'
+RESULT_NO_INTEG              = 'NO_INTEGRITY_CHECK'
+RESULT_TYPE                  = 'WEAKNESS_TYPE' 
+AFFECT_PLAY_COUNT            = 'AFFECTED_PLAY_COUNT'

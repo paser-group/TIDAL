@@ -6,6 +6,7 @@ Module to detect security weaknesses
 import parser 
 import constants 
 import graph 
+import numpy as np 
 
 
 def getDefaultPortCount( yaml_content_dic ):
@@ -252,9 +253,14 @@ def getSecretCount(  yam_dict ):
 
 def scanSingleScriptForAllTypes( script_path , org_dir ):
     yamL_ds  = parser.loadYAML( script_path  )
-    susp_comments, port_res_dic , ip_res_dic , http_res_dic , empty_pwd_dic , no_integ_dic, secret_dic_ls = [], {}, {}, {}, {}, {}, []
+    six_res_final_list, susp_comments = [] , [] 
+    http_res_dic, ip_res_dic,      empty_pwd_dic,  port_res_dic,   no_integ_dic, secret_dic_ls    = {}, {}, {}, {}, {}, []
+    http_usage_di, inv_ip_use_di,  emp_pwd_use_d,  port_use_dic,   no_int_use_d, secret_use_ls    = {}, {}, {}, {}, {}, []  
+    cross_http_di, cross_inv_ip_d, cross_empt_p_d, cross_port_p_d, cross_int_no_d, cross_secre_ls = {}, {}, {}, {}, {}, []  
+
     if( isinstance(yamL_ds, list) ):
         for dic in yamL_ds:
+            play_status  = constants.SOURCE_TYPE_NON_PLAY 
             # print( dic )
             port_res_dic = getDefaultPortCount( dic )
             ip_res_dic   = getInvalidIPCount( dic )
@@ -277,13 +283,16 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
             secret_use_ls= [ graph.getSecretPlayUsage(dic, secret_dic_ls[0]), graph.getSecretPlayUsage(dic, secret_dic_ls[1]), graph.getSecretPlayUsage(dic, secret_dic_ls[2]) ]
             #TODO if you get a list of dicts , then check for `name` in the key list, and if that exists then all 
             # `use_dicts` will have a play , regardless of output in getPlayUsage() 
+            if ( constants.PLAY_NAME_CONSTANT in dic ):
+                play_status = constants.SOURCE_TYPE_PLAY 
             '''
             We also need to do cross script taint tracking 
             '''
             # secret 
             cross_uname_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[0])
             cross_passw_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[1])
-            cross_prike_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[2])  
+            cross_prike_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[2]) 
+            cross_secre_ls= [ cross_uname_di, cross_passw_di, cross_prike_di ] 
             # insecure HTTP 
             cross_http_di = graph.getCrossReffs( org_dir, script_path, http_usage_di )
             # invalid ip usage 
@@ -293,7 +302,20 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
             # cross port usage 
             cross_port_p_d= graph.getCrossReffs( org_dir, script_path, port_use_dic )     
             # cross no integrity check usage 
-            cross_int_no_d= graph.getCrossReffs( org_dir, script_path, no_int_use_d )                                   
+            cross_int_no_d= graph.getCrossReffs( org_dir, script_path, no_int_use_d )  
+
+            final_result_tuple = ( 
+                               getSummaryWhenName( constants.RESULT_USERNAME,     secret_dic_ls[0],  cross_secre_ls[0], secret_use_ls[0]), 
+                               getSummaryWhenName( constants.RESULT_PASSWORD,     secret_dic_ls[1],  cross_secre_ls[1], secret_use_ls[1]), 
+                               getSummaryWhenName( constants.RESULT_PRIVATE_KEY,  secret_dic_ls[2],  cross_secre_ls[2], secret_use_ls[2]),                                
+                               getSummaryWhenName( constants.RESULT_INSECURE_HTTP,http_res_dic    ,  cross_http_di    , http_usage_di  ),   
+                               getSummaryWhenName( constants.RESULT_INVALID_IP,   ip_res_dic      ,  cross_inv_ip_d   , inv_ip_use_di  ),   
+                               getSummaryWhenName( constants.RESULT_EMPTY_PWD,    empty_pwd_dic   ,  cross_empt_p_d   , emp_pwd_use_d  ),   
+                               getSummaryWhenName( constants.RESULT_DEFAULT_PORT, port_res_dic    ,  cross_port_p_d   , port_use_dic  ),   
+                               getSummaryWhenName( constants.RESULT_NO_INTEG,     no_integ_dic    ,  cross_int_no_d   , no_int_use_d  ),   
+                            )
+
+            six_res_final_list.append( final_result_tuple )                                             
 
 
     elif ( isinstance(  yamL_ds, dict)  ):
@@ -324,6 +346,7 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
         cross_uname_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[0])
         cross_passw_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[1])
         cross_prike_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[2])  
+        cross_secre_ls= [ cross_uname_di, cross_passw_di, cross_prike_di ] 
         # cross http usage 
         cross_http_di = graph.getCrossReffs( org_dir, script_path, http_usage_di )
         # cross invalid ip usage 
@@ -335,21 +358,65 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
         # cross no integrity check usage 
         cross_int_no_d= graph.getCrossReffs( org_dir, script_path, no_int_use_d )
 
+        final_result_tuple = ( 
+                               getSummary( constants.RESULT_USERNAME,     secret_dic_ls[0],  cross_secre_ls[0], secret_use_ls[0] ), 
+                               getSummary( constants.RESULT_PASSWORD,     secret_dic_ls[1],  cross_secre_ls[1], secret_use_ls[1] ), 
+                               getSummary( constants.RESULT_PRIVATE_KEY,  secret_dic_ls[2],  cross_secre_ls[2], secret_use_ls[2] ),                                
+                               getSummary( constants.RESULT_INSECURE_HTTP,http_res_dic    ,  cross_http_di    , http_usage_di     ),   
+                               getSummary( constants.RESULT_INVALID_IP,   ip_res_dic      ,  cross_inv_ip_d   , inv_ip_use_di ),   
+                               getSummary( constants.RESULT_EMPTY_PWD,    empty_pwd_dic   ,  cross_empt_p_d   , emp_pwd_use_d  ),   
+                               getSummary( constants.RESULT_DEFAULT_PORT, port_res_dic    ,  cross_port_p_d   , port_use_dic  ),   
+                               getSummary( constants.RESULT_NO_INTEG,     no_integ_dic    ,  cross_int_no_d   , no_int_use_d  ),   
+                            )
 
-    # for k_, v_ in cross_int_no_d.items(): 
-    #             print( k_, v_[2] )
-    #             print( v_[1], constants.PRINT_COLON_HELPER , v_[3] )
-    #             print( '=' * 100  )
+        six_res_final_list.append( final_result_tuple )
 
     '''
     Let us also detect suspicious comments 
     '''
     susp_comments  = getSuspComments( script_path )
     # print(susp_comments)
+    '''
+    Results for each will be saved as a tuple: first tuple is  a list with values for 6 types of weaknesses, the secodn eleemnt of the tupel is the number of susp. comments 
+    '''
+    final_per_script_result = ( six_res_final_list , len( susp_comments ) )
+    return final_per_script_result 
 
 
 
+
+
+def getSummary( weakness_type,  detcted_dict , cross_script_dict , used_dict  ):
+    dic2ret = {} 
+    tp_cnt  = 0 
+    dic2ret[ constants.RESULT_TYPE  ]           = weakness_type 
+    dic2ret[constants.RESULT_RAW_COUNT]         = len( detcted_dict )
+    keys_in_cross_dict                          = [ z_[1] for z_ in   cross_script_dict.values() ] 
+    tp_cnt                                      = len( np.unique( keys_in_cross_dict ) )
+    dic2ret[constants.RESULT_TP_COUNT]          = tp_cnt
+    dic2ret[constants.RESULT_CROSS_SCRIPT_DICT] = cross_script_dict  
+    used_in_play_dict                           = {k:v for k, v in used_dict.items() if v[3] == constants.SOURCE_TYPE_PLAY   }
+    affceted_play_count                         = len( used_in_play_dict ) + len( cross_script_dict )
+    dic2ret[constants.AFFECT_PLAY_COUNT]        = affceted_play_count      
+    # if( len(detcted_dict) > 0  ):
+    #     print( dic2ret )    
+    return dic2ret
     
+
+def getSummaryWhenName( weakness_type,  detcted_dict , cross_script_dict , used_dict  ):
+    dic2ret                                     = {} 
+    tp_cnt                                      = 0 
+    dic2ret[ constants.RESULT_TYPE  ]           = weakness_type 
+    dic2ret[constants.RESULT_RAW_COUNT]         = len( detcted_dict )
+    keys_in_cross_dict                          = [ z_[1] for z_ in   cross_script_dict.values() ] 
+    tp_cnt                                      = len( np.unique( keys_in_cross_dict ) ) + len( used_dict )
+    dic2ret[constants.RESULT_TP_COUNT]          = tp_cnt
+    dic2ret[constants.RESULT_CROSS_SCRIPT_DICT] = cross_script_dict  
+    affceted_play_count                         = len( used_dict ) + len( cross_script_dict )
+    dic2ret[constants.AFFECT_PLAY_COUNT]        = affceted_play_count      
+    if( len(detcted_dict) > 0  ):
+        print( dic2ret )    
+    return dic2ret
 
 
 if __name__=='__main__':
@@ -390,11 +457,15 @@ if __name__=='__main__':
 
         # test_ports_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/laincloud@lain/playbooks/roles/config/defaults/main.yaml'
         # test_ports_yaml   = '_TEST_ARTIFACTS/roles.tp.default.port.yaml'
-
-        test_no_integ = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/katello/roles/add_katello_repos/tasks/main.yaml'
-
-        # test_secret_tp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/d34dh0r53@os-ansible-deployment/playbooks/roles/os_heat/files/templates/AWS_RDS_DBInstance.yaml'
-        org_path = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/'
+        '''
+        Shortlist to test out full script analysis 
+        '''
+        test_no_integ         = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/katello/roles/add_katello_repos/tasks/main.yaml'
+        test_secret_tp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/d34dh0r53@os-ansible-deployment/playbooks/roles/os_heat/files/templates/AWS_RDS_DBInstance.yaml'
+        test_ports            = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/laincloud@lain/playbooks/roles/config/defaults/main.yaml'
         
+        org_path              = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/'        
+        per_script_res        =  scanSingleScriptForAllTypes( test_ports , org_path ) 
         
-        scanSingleScriptForAllTypes( test_no_integ, org_path ) 
+        # print( len( per_script_res [0]  ) )
+        # print( per_script_res[0] )
