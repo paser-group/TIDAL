@@ -281,8 +281,6 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
             # print( no_integ_dic  )
             # print( no_int_use_d )
             secret_use_ls= [ graph.getSecretPlayUsage(dic, secret_dic_ls[0]), graph.getSecretPlayUsage(dic, secret_dic_ls[1]), graph.getSecretPlayUsage(dic, secret_dic_ls[2]) ]
-            #TODO if you get a list of dicts , then check for `name` in the key list, and if that exists then all 
-            # `use_dicts` will have a play , regardless of output in getPlayUsage() 
             if ( constants.PLAY_NAME_CONSTANT in dic ):
                 play_status = constants.SOURCE_TYPE_PLAY 
             '''
@@ -384,8 +382,6 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
 
 
 
-
-
 def getSummary( weakness_type,  detcted_dict , cross_script_dict , used_dict  ):
     dic2ret = {} 
     tp_cnt  = 0 
@@ -414,8 +410,8 @@ def getSummaryWhenName( weakness_type,  detcted_dict , cross_script_dict , used_
     dic2ret[constants.RESULT_CROSS_SCRIPT_DICT] = cross_script_dict  
     affceted_play_count                         = len( used_dict ) + len( cross_script_dict )
     dic2ret[constants.AFFECT_PLAY_COUNT]        = affceted_play_count      
-    if( len(detcted_dict) > 0  ):
-        print( dic2ret )    
+    # if( len(detcted_dict) > 0  ):
+    #     print( dic2ret )    
     return dic2ret
 
 
@@ -461,11 +457,12 @@ if __name__=='__main__':
         Shortlist to test out full script analysis 
         '''
         test_no_integ         = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/playbooks/katello/roles/add_katello_repos/tasks/main.yaml'
-        test_secret_tp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/d34dh0r53@os-ansible-deployment/playbooks/roles/os_heat/files/templates/AWS_RDS_DBInstance.yaml'
+        test_secret_fp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/d34dh0r53@os-ansible-deployment/playbooks/roles/os_heat/files/templates/AWS_RDS_DBInstance.yaml'
+        test_secret_tp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/conf/satperf.yaml'
         test_ports            = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/laincloud@lain/playbooks/roles/config/defaults/main.yaml'
         
         org_path              = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/'        
-        per_script_res        =  scanSingleScriptForAllTypes( test_ports , org_path ) 
+        per_script_res        =  scanSingleScriptForAllTypes( test_no_integ , org_path ) 
         
         # print( len( per_script_res [0]  ) )
         # print( per_script_res[0] )

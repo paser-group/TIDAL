@@ -426,5 +426,60 @@ class TestCrossNoIntegrityGraphs( unittest.TestCase ):
         cross_inte_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  inte_use_dict )
         self.assertEqual(oracle_value, len( cross_inte_di ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
+
+class TestResultCollecton( unittest.TestCase ):
+
+    def testResultGen(self):     
+        oracle_value = 2
+        scriptName   = _TEST_CONSTANTS.result_gen_script1
+        res_         = detector.scanSingleScriptForAllTypes( scriptName , _TEST_CONSTANTS.org_path)
+        self.assertEqual(oracle_value, len( res_ ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testResultGenSuspComment(self):     
+        oracle_value = 0
+        scriptName   = _TEST_CONSTANTS.result_gen_script1
+        res_         = detector.scanSingleScriptForAllTypes( scriptName , _TEST_CONSTANTS.org_path)
+        # the second element is numbe rof suspcious comments 
+        self.assertEqual(oracle_value,  res_[1]  ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testResultGenPorts(self):     
+        oracle_val1  = 1
+        oracle_val2  = 0
+        scriptName   = _TEST_CONSTANTS.result_gen_port_scri
+        res_         = detector.scanSingleScriptForAllTypes( scriptName , _TEST_CONSTANTS.org_path)
+        res_others   = res_[0][0]
+        for weakness_dic in res_others:
+            if _TEST_CONSTANTS.RESULT_DEFAULT_PORT in weakness_dic:
+                self.assertEqual(oracle_val1,  weakness_dic[ _TEST_CONSTANTS.RAW_COUNT_KEYWORD ],  _TEST_CONSTANTS._common_error_string + str(oracle_val1)  ) 
+                self.assertEqual(oracle_val2,  weakness_dic[ _TEST_CONSTANTS.TP_COUNT_KEYWORD ],  _TEST_CONSTANTS._common_error_string + str(oracle_val2)  ) 
+    def testResultSecrets(self):     
+        oracle_val1  = 251
+        oracle_val2  = 251
+        oracle_val3  = 3 
+        scriptName   = _TEST_CONSTANTS.result_gen_script2
+        res_         = detector.scanSingleScriptForAllTypes( scriptName , _TEST_CONSTANTS.org_path)
+        res_others   = res_[0][0]
+        for weakness_dic in res_others:
+            if _TEST_CONSTANTS.RESULT_USERNAME in weakness_dic:
+                self.assertEqual(oracle_val1,  weakness_dic[ _TEST_CONSTANTS.AFFECTED_KEYWORD ],  _TEST_CONSTANTS._common_error_string + str(oracle_val1)  ) 
+            if _TEST_CONSTANTS.RESULT_PASSWORD in weakness_dic:
+                self.assertEqual(oracle_val2,  weakness_dic[ _TEST_CONSTANTS.AFFECTED_KEYWORD ],  _TEST_CONSTANTS._common_error_string + str(oracle_val2)  ) 
+            if _TEST_CONSTANTS.RESULT_PRIVATE_KEY in weakness_dic:
+                self.assertEqual(oracle_val3,  weakness_dic[ _TEST_CONSTANTS.AFFECTED_KEYWORD ],  _TEST_CONSTANTS._common_error_string + str(oracle_val3)  ) 
+
+    def testResultNoInteg(self):     
+        oracle_val1  = 1
+        oracle_val2  = 1
+        oracle_val3  = 10
+        scriptName   = _TEST_CONSTANTS.result_gen_no_integ
+        res_         = detector.scanSingleScriptForAllTypes( scriptName , _TEST_CONSTANTS.org_path)
+        res_others   = res_[0][0]
+        self.assertEqual(  oracle_val3, len( res_[0] ), _TEST_CONSTANTS._common_error_string + str (oracle_val3)  )
+        for weakness_dic in res_others:
+            if _TEST_CONSTANTS.NO_INTEG_KEYWORD in weakness_dic:
+                self.assertEqual(oracle_val1,  weakness_dic[ _TEST_CONSTANTS.RAW_COUNT_KEYWORD ],  _TEST_CONSTANTS._common_error_string + str(oracle_val1)  ) 
+                self.assertEqual(oracle_val2,  weakness_dic[ _TEST_CONSTANTS.TP_COUNT_KEYWORD ],  _TEST_CONSTANTS._common_error_string + str(oracle_val1)  ) 
+
+
 if __name__ == '__main__':
     unittest.main() 
