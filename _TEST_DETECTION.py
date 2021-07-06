@@ -212,7 +212,7 @@ class TestTPSecretDetection( unittest.TestCase ):
         self.assertEqual(oracle_value, len(lis_dic[1] ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
     def testTP_Password2(self):     
-        oracle_value = _TEST_CONSTANTS.root_pwd_str
+        oracle_value = _TEST_CONSTANTS.sat_pas_str 
         scriptName   = _TEST_CONSTANTS.tp_secret_yaml
         dic_         = parser.loadYAML( scriptName ) 
         lis_dic      = detector.getSecretCount ( dic_  )

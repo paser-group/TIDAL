@@ -119,6 +119,19 @@ def getYAMLFiles(path_to_dir):
                valid_.append(full_p_file)
     return valid_ 
 
+def getPlayYamls( yaml_list ):
+    lis2ret = [] 
+    for yaml_path_ in yaml_list:
+        parsed_yaml = parser.loadYAML( yaml_path_ )
+        if( isinstance( parsed_yaml, list ) ):
+            for dic in parsed_yaml: 
+                if constants.PLAY_NAME_CONSTANT in dic: 
+                    lis2ret.append( yaml_path_ )
+        elif( isinstance(parsed_yaml, dict)  ): 
+                if constants.PLAY_NAME_CONSTANT in parsed_yaml: 
+                    lis2ret.append( yaml_path_ )
+    return lis2ret
+
 
 def checkIfValidReff( src_key, val2inspect ):
     val_ret      = False 
@@ -146,6 +159,9 @@ def getCrossReffs(org_dir, script_path, prelim_graph_dic):
             script_src_root = splitted_things[0]
             dir2search      = org_dir + script_src_root 
             yamls_in_dir    = getYAMLFiles( dir2search )
+            #TODO Need to uncomment and run entire test suite 
+            # yamls_with_plays= getPlayYamls( yamls_in_dir )
+            # for yaml_ in yamls_with_plays:
             for yaml_ in yamls_in_dir:
                 # print( script_path,  yaml_, key_lis  )
                 ya_di   = parser.loadYAML( yaml_ )

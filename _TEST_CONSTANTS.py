@@ -47,6 +47,7 @@ fp_secret_yaml5      = '_TEST_ARTIFACTS/secret.fp5.satperf.yaml'
 fp_secret_yaml6      = '_TEST_ARTIFACTS/secret.fp6.satperf.yaml'
 another_tp_secret_y  = '_TEST_ARTIFACTS/tp.secret.cleanup.yaml'
 root_user_str        = 'root'
+sat_pas_str          = 'sat_pass'
 
 SOURCE_TYPE_PLAY     = 'PLAY'
 SOURCE_TYPE_NON_PLAY = 'NON_PLAY'

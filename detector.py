@@ -7,7 +7,8 @@ import parser
 import constants 
 import graph 
 import numpy as np 
-
+import pandas as pd 
+import os 
 
 def getDefaultPortCount( yaml_content_dic ):
     res_dic = {}
@@ -16,6 +17,8 @@ def getDefaultPortCount( yaml_content_dic ):
     temp_key_lis, temp_ports_ls = [] , []
     parser.getKeyRecursively( yaml_content_dic, temp_key_lis  )
     only_keys = [x_[0] for x_ in temp_key_lis]
+    only_keys = [ sanitizeConfigKeys(var) for var in only_keys  ]
+    only_keys = np.unique( only_keys )
 
     # print( only_keys )
     # if constants.PORTS_KEYWORD in yaml_content_dic  :
@@ -135,7 +138,9 @@ def getEmptyPasswordCount(yaml_dict):
     counter  = 0
     key_lis  = [] 
     parser.getKeyRecursively( yaml_dict, key_lis )
-    only_keys= [ z_[0] for z_ in key_lis ]
+    only_keys = [ z_[0] for z_ in key_lis ]
+    only_keys = [ sanitizeConfigKeys(var) for var in only_keys  ]
+    only_keys = np.unique( only_keys )    
     for k_  in only_keys :
         if ( any( z_ in k_ for z_ in constants.VALID_PASSWORD_STRS ) ): 
             val_holder = [] 
@@ -163,6 +168,7 @@ def getIntegViolationCount( yaml_dic ):
     parser.getKeyRecursively(yaml_dic, all_keys)
     the_keys = {x_[0]:x_[1] for x_ in all_keys} 
     for key_, depth  in the_keys.items():
+        key_ = sanitizeConfigKeys( key_ )
         if( any( str_ in key_ for str_ in constants.INTEG_KW_LIST ) ):
             key_vals = [] 
             parser.getValsFromKey(yaml_dic, key_, key_vals )
@@ -183,11 +189,13 @@ def getIntegViolationCount( yaml_dic ):
 
 
 def getUsernameCount( yaml_dict ):
-    res_dic  = {} 
-    counter  = 0
-    key_lis  = [] 
+    res_dic   = {} 
+    counter   = 0
+    key_lis   = [] 
     parser.getKeyRecursively( yaml_dict, key_lis )
-    only_keys= [T_[0] for T_ in key_lis] 
+    only_keys = [T_[0] for T_ in key_lis] 
+    only_keys = [ sanitizeConfigKeys(var) for var in only_keys  ]
+    only_keys = np.unique( only_keys )        
     for k_  in only_keys :
         # print( k_  )
         if ( any( z_ in k_ for z_ in constants.VALID_USERNAME_STRS ) ) and ( any( y_ in k_ for y_ in constants.INVALID_USERNAME_STRS ) == False  ): 
@@ -209,6 +217,8 @@ def getPasswordCount( yaml_dict ):
     key_lis  = [] 
     parser.getKeyRecursively( yaml_dict, key_lis )
     only_keys= [T_[0] for T_ in key_lis] 
+    only_keys = [ sanitizeConfigKeys(var) for var in only_keys  ]
+    only_keys = np.unique( only_keys )        
     for k_  in only_keys :
         if ( any( z_ in k_ for z_ in constants.VALID_PASSWORD_STRS ) ) and ( any( x_ in k_ for x_ in constants.INVALID_PASSWORD_STRS ) == False ) : 
             val_holder = [] 
@@ -225,11 +235,13 @@ def getPasswordCount( yaml_dict ):
 
 
 def getPrivKeyCount( yaml_dict ):
-    res_dic  = {} 
-    counter  = 0
-    key_lis  = [] 
+    res_dic   = {} 
+    counter   = 0
+    key_lis   = [] 
     parser.getKeyRecursively( yaml_dict, key_lis )
-    only_keys= [T_[0] for T_ in key_lis] 
+    only_keys = [T_[0] for T_ in key_lis] 
+    only_keys = [ sanitizeConfigKeys(var) for var in only_keys  ]
+    only_keys = np.unique( only_keys )        
     for k_  in only_keys :
         if ( any( z_ in k_ for z_ in constants.VALID_PRIVATE_STRS ) ) and ( any( t_ in k_ for t_ in constants.VALID_KEY_STRS ) ) and ( any( x_ in k_ for x_ in constants.INVALID_KEY_STRS ) == False ) : 
             val_holder = [] 
@@ -415,6 +427,63 @@ def getSummaryWhenName( weakness_type,  detcted_dict , cross_script_dict , used_
     return dic2ret
 
 
+
+
+def getYAMLFiles(path_to_dir):
+    valid_  = [] 
+    for root_, dirs, files_ in os.walk( path_to_dir ):
+       for file_ in files_:
+           full_p_file = os.path.join(root_, file_)
+           if(os.path.exists(full_p_file)):
+             if (full_p_file.endswith( constants.YML_EXTENSION  )  or full_p_file.endswith( constants.YAML_EXTENSION  )  ):
+               valid_.append(full_p_file)
+    return valid_ 
+
+def scanMultipleScript4AllTypes( dir2scan ):
+    all_content   = [] 
+    all_yml_files = getYAMLFiles(dir2scan)
+    file_counter  = 0 
+    for yml_ in all_yml_files:
+        '''
+        Need to filter out `.github/workflows.yml files`  
+        '''
+        if(parser.checkIfWeirdYAML ( yml_  )  == False):   
+            file_counter                                  = file_counter + 1   
+            six_res_lis, susp_coun                        = scanSingleScriptForAllTypes(yml_, org_path)
+            unam_coun, pass_coun, priv_coun, ip_addr_coun = 0, 0, 0, 0 
+            http_coun, port_coun, emp_pwd_c, no_integ_cou = 0, 0, 0, 0    
+            for tuple_of_dicts in six_res_lis:
+                for dict_ in tuple_of_dicts:
+                    if constants.RESULT_USERNAME in dict_: 
+                        unam_coun    = unam_coun + dict_[ constants.RESULT_TP_COUNT ]
+                    elif constants.RESULT_PASSWORD in dict_: 
+                        pass_coun    = pass_coun + dict_[ constants.RESULT_TP_COUNT ]
+                    elif constants.RESULT_PRIVATE_KEY in dict_: 
+                        priv_coun    = priv_coun + dict_[ constants.RESULT_TP_COUNT ]
+                    elif constants.RESULT_INVALID_IP in dict_: 
+                        ip_addr_coun = ip_addr_coun + dict_[ constants.RESULT_TP_COUNT ]                        
+                    elif constants.RESULT_INSECURE_HTTP in dict_: 
+                        http_coun    = http_coun + dict_[ constants.RESULT_TP_COUNT ]  
+                    elif constants.RESULT_DEFAULT_PORT in dict_: 
+                        port_coun    = port_coun + dict_[ constants.RESULT_TP_COUNT ]              
+                    elif constants.RESULT_EMPTY_PWD in dict_: 
+                        emp_pwd_c    = emp_pwd_c + dict_[ constants.RESULT_TP_COUNT ]   
+                    elif constants.RESULT_NO_INTEG in dict_: 
+                        no_integ_cou = no_integ_cou + dict_[ constants.RESULT_TP_COUNT ]    
+            print( yml_ + constants.WHITESPACE_SYMBOL + str( file_counter ) )
+            all_content.append( ( dir2scan, yml_, susp_coun, unam_coun, pass_coun, priv_coun, ip_addr_coun, http_coun, port_coun, emp_pwd_c, no_integ_cou )) 
+    all_dir_yml_res = pd.DataFrame( all_content ) 
+    return all_dir_yml_res 
+
+
+
+def sanitizeConfigKeys(config_key):
+    if (isinstance( config_key  , str )  == False ) :
+        valid_config_key_   = constants.DEFAULT_CONFIG_KEY
+    else: 
+        valid_config_key_   = config_key 
+    return valid_config_key_ 
+
 if __name__=='__main__':
         # test_ports_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/misc/gce-federation/files/pacman-service.yaml'
         # test_ports_yaml = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-ansible-contrib/misc/gce-federation/files/mongo-deployment-rs.yaml'
@@ -462,7 +531,13 @@ if __name__=='__main__':
         test_ports            = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/laincloud@lain/playbooks/roles/config/defaults/main.yaml'
         
         org_path              = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/'        
-        per_script_res        =  scanSingleScriptForAllTypes( test_no_integ , org_path ) 
-        
+        # per_script_res        =  scanSingleScriptForAllTypes( test_no_integ , org_path ) 
         # print( len( per_script_res [0]  ) )
         # print( per_script_res[0] )
+
+
+        org_dire              = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ostk-ansi/'        
+        lol = scanMultipleScript4AllTypes( org_dire  )
+        print( lol.head() )
+        print( lol.shape )
+        
