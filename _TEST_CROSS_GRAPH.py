@@ -10,6 +10,7 @@ import parser
 import graph 
 import detector
 import numpy as np 
+import pandas as pd 
 
 
 class TestCrossSecretGraphs( unittest.TestCase ):
@@ -479,6 +480,38 @@ class TestResultCollecton( unittest.TestCase ):
             if _TEST_CONSTANTS.NO_INTEG_KEYWORD in weakness_dic:
                 self.assertEqual(oracle_val1,  weakness_dic[ _TEST_CONSTANTS.RAW_COUNT_KEYWORD ],  _TEST_CONSTANTS._common_error_string + str(oracle_val1)  ) 
                 self.assertEqual(oracle_val2,  weakness_dic[ _TEST_CONSTANTS.TP_COUNT_KEYWORD ],  _TEST_CONSTANTS._common_error_string + str(oracle_val1)  ) 
+
+
+
+class TestResultDataframe( unittest.TestCase ):        
+
+    def testDataframeRows(self):     
+        oracle_value = 257 
+        df_res_      = pd.read_csv( _TEST_CONSTANTS.TEST_OUTPUT_CSV ) 
+        self.assertEqual(oracle_value, df_res_.shape[0] ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testDataframeNoInteg(self):     
+        oracle_value = 7
+        df_res_      = pd.read_csv( _TEST_CONSTANTS.TEST_OUTPUT_CSV ) 
+        file_df_     = df_res_ [ df_res_[_TEST_CONSTANTS.YAML_KEY] == _TEST_CONSTANTS.TEST_NO_INTEG_FILE ]
+        self.assertEqual(oracle_value, file_df_[ _TEST_CONSTANTS.NO_INTEG_KEYWORD ].tolist()[0] ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testDataframeUsername(self):     
+        oracle_value = 2
+        df_res_      = pd.read_csv( _TEST_CONSTANTS.TEST_OUTPUT_CSV ) 
+        file_df_     = df_res_ [ df_res_[ _TEST_CONSTANTS.YAML_KEY ] == _TEST_CONSTANTS.SATPERF_TEST_FILE ]
+        self.assertEqual(oracle_value, file_df_[ _TEST_CONSTANTS.RESULT_USERNAME ].tolist()[0] ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+
+    def testDataframePassword(self):     
+        oracle_value = 2
+        df_res_      = pd.read_csv( _TEST_CONSTANTS.TEST_OUTPUT_CSV ) 
+        file_df_     = df_res_ [ df_res_[ _TEST_CONSTANTS.YAML_KEY ] == _TEST_CONSTANTS.SATPERF_TEST_FILE ]
+        self.assertEqual(oracle_value, file_df_[ _TEST_CONSTANTS.RESULT_PASSWORD ].tolist()[0] ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+    def testDataframeInsecureHTTP(self):     
+        oracle_value = 3
+        df_res_      = pd.read_csv( _TEST_CONSTANTS.TEST_OUTPUT_CSV ) 
+        file_df_     = df_res_ [ df_res_[ _TEST_CONSTANTS.YAML_KEY ] == _TEST_CONSTANTS.SATPERF_TEST_FILE ]
+        self.assertEqual(oracle_value, file_df_[ _TEST_CONSTANTS.HTTP_HEADER ].tolist()[0] ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
 
 if __name__ == '__main__':

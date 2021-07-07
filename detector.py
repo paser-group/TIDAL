@@ -454,24 +454,25 @@ def scanMultipleScript4AllTypes( dir2scan ):
             http_coun, port_coun, emp_pwd_c, no_integ_cou = 0, 0, 0, 0    
             for tuple_of_dicts in six_res_lis:
                 for dict_ in tuple_of_dicts:
-                    if constants.RESULT_USERNAME in dict_: 
+                    if constants.RESULT_USERNAME == dict_[constants.WEAKNESS_KW]: 
                         unam_coun    = unam_coun + dict_[ constants.RESULT_TP_COUNT ]
-                    elif constants.RESULT_PASSWORD in dict_: 
+                    if constants.RESULT_PASSWORD == dict_[constants.WEAKNESS_KW]: 
                         pass_coun    = pass_coun + dict_[ constants.RESULT_TP_COUNT ]
-                    elif constants.RESULT_PRIVATE_KEY in dict_: 
+                    if constants.RESULT_PRIVATE_KEY == dict_[constants.WEAKNESS_KW]: 
                         priv_coun    = priv_coun + dict_[ constants.RESULT_TP_COUNT ]
-                    elif constants.RESULT_INVALID_IP in dict_: 
+                    if constants.RESULT_INVALID_IP == dict_[constants.WEAKNESS_KW] : 
                         ip_addr_coun = ip_addr_coun + dict_[ constants.RESULT_TP_COUNT ]                        
-                    elif constants.RESULT_INSECURE_HTTP in dict_: 
+                    if constants.RESULT_INSECURE_HTTP == dict_[constants.WEAKNESS_KW] : 
                         http_coun    = http_coun + dict_[ constants.RESULT_TP_COUNT ]  
-                    elif constants.RESULT_DEFAULT_PORT in dict_: 
+                    if constants.RESULT_DEFAULT_PORT == dict_[constants.WEAKNESS_KW]: 
                         port_coun    = port_coun + dict_[ constants.RESULT_TP_COUNT ]              
-                    elif constants.RESULT_EMPTY_PWD in dict_: 
+                    if constants.RESULT_EMPTY_PWD == dict_[constants.WEAKNESS_KW]: 
                         emp_pwd_c    = emp_pwd_c + dict_[ constants.RESULT_TP_COUNT ]   
-                    elif constants.RESULT_NO_INTEG in dict_: 
+                    if constants.RESULT_NO_INTEG == dict_[constants.WEAKNESS_KW]: 
                         no_integ_cou = no_integ_cou + dict_[ constants.RESULT_TP_COUNT ]    
             print( yml_ + constants.WHITESPACE_SYMBOL + str( file_counter ) )
-            all_content.append( ( dir2scan, yml_, susp_coun, unam_coun, pass_coun, priv_coun, ip_addr_coun, http_coun, port_coun, emp_pwd_c, no_integ_cou )) 
+            tup_ = ( dir2scan, yml_, susp_coun, unam_coun, pass_coun, priv_coun, ip_addr_coun, http_coun, port_coun, emp_pwd_c, no_integ_cou )
+            all_content.append( tup_ ) 
     all_dir_yml_res = pd.DataFrame( all_content ) 
     return all_dir_yml_res 
 
