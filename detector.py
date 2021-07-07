@@ -29,7 +29,7 @@ def getDefaultPortCount( yaml_content_dic ):
         temp_ports_ls = vals_for_key
     elif constants.SSH_PORT_KEYWORD in only_keys:
         temp_ports_ls = [] 
-        temp_ports_ls.append( [ { constants.SSH_PORT_KEYWORD  :  yaml_content_dic[ constants.SSH_PORT_KEYWORD ] } ] )
+        temp_ports_ls.append( [ { constants.SSH_PORT_KEYWORD  :  constants.SSH_DEFAULT_PORT_VAL } ] )
     # print( temp_ports_ls )
     for temp_ports in temp_ports_ls:
         for temp_port in temp_ports: 
@@ -537,7 +537,10 @@ if __name__=='__main__':
 
 
         org_dire              = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ostk-ansi/'        
+        org_dire              = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/test-ansi/'        
         lol = scanMultipleScript4AllTypes( org_dire  )
         print( lol.head() )
         print( lol.shape )
+        OUTPUT_FILE_CSV = '/Users/arahman/Documents/OneDriveWingUp/OneDrive-TennesseeTechUniversity/Research/IaC/FixFalsePositive/output-taintible/V1_TEST_TP_OUTPUT.csv'
+        lol.to_csv( OUTPUT_FILE_CSV, header= constants.CSV_HEADER , index=False, encoding= constants.CSV_ENCODING ) 
         

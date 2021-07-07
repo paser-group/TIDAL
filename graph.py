@@ -111,12 +111,13 @@ def getSecretPlayUsage( full_dic, weakness_dic ):
 
 def getYAMLFiles(path_to_dir):
     valid_  = [] 
-    for root_, dirs, files_ in os.walk( path_to_dir ):
-       for file_ in files_:
-           full_p_file = os.path.join(root_, file_)
-           if(os.path.exists(full_p_file)):
-             if (full_p_file.endswith( constants.YAML_EXTENSION  ) or full_p_file.endswith( constants.YML_EXTENSION  )  ):
-               valid_.append(full_p_file)
+    if os.path.exists( path_to_dir ):
+        for root_, dirs, files_ in os.walk( path_to_dir ):
+            for file_ in files_:
+                full_p_file = os.path.join(root_, file_)
+                if(os.path.exists(full_p_file)):
+                    if (full_p_file.endswith( constants.YAML_EXTENSION  ) or full_p_file.endswith( constants.YML_EXTENSION  )  ):
+                        valid_.append(full_p_file)
     return valid_ 
 
 def getPlayYamls( yaml_list ):
@@ -143,6 +144,17 @@ def checkIfValidReff( src_key, val2inspect ):
     return val_ret
     
 
+
+def getDirFromScriptPath(s_path, org_dir):
+    temp_script     = s_path 
+    script_src_repo = temp_script.replace( org_dir, constants.NULL_SYMBOL )
+    # print( script_path, script_src_repo )
+    splitted_things = script_src_repo.split( constants.SLASH_SYMBOL )
+    # print( splitted_things )
+    script_src_root = splitted_things[0]
+    dir2search      = org_dir + script_src_root     
+    return dir2search
+
 def getCrossReffs(org_dir, script_path, prelim_graph_dic):
     res_cnt = 0 
     res_dic = {} 
@@ -151,17 +163,8 @@ def getCrossReffs(org_dir, script_path, prelim_graph_dic):
         # print(key_lis)
         key_lis = np.unique( key_lis )
         if type_ == constants.SOURCE_TYPE_NON_PLAY:
-            temp_script     = script_path 
-            script_src_repo = temp_script.replace( org_dir, constants.NULL_SYMBOL )
-            # print( script_path, script_src_repo )
-            splitted_things = script_src_repo.split( constants.SLASH_SYMBOL )
-            # print( splitted_things )
-            script_src_root = splitted_things[0]
-            dir2search      = org_dir + script_src_root 
+            dir2search      = getDirFromScriptPath( script_path, org_dir )
             yamls_in_dir    = getYAMLFiles( dir2search )
-            #TODO Need to uncomment and run entire test suite 
-            # yamls_with_plays= getPlayYamls( yamls_in_dir )
-            # for yaml_ in yamls_with_plays:
             for yaml_ in yamls_in_dir:
                 # print( script_path,  yaml_, key_lis  )
                 ya_di   = parser.loadYAML( yaml_ )
