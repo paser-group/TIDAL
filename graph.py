@@ -96,6 +96,7 @@ def getSecretPlayUsage( full_dic, weakness_dic ):
             if isinstance( keyOfValList, list ):
                 keyOfValList = [ x for x in keyOfValList if x!= val_ ] ## the config. value of interest is also in the list so need to exclude it 
                 keyOfValList = [ temp for temp in keyOfValList if temp != constants.INVALID_YAML_KEY_INDEX_STR] ## need to filter '0', as '0' is included in parsing 
+                keyOfValList = [ detector.sanitizeConfigKeys( kName ) for kName in keyOfValList ]
                 keyOfValList = [key_name for key_name in keyOfValList if checkIfValidSecretName( key_name ) ]
                 if ( src_key != constants.NULL_SYMBOL ):
                     # print(src_key)
