@@ -20,48 +20,44 @@ def getDefaultPortCount( yaml_content_dic ):
     only_keys = [ sanitizeConfigKeys(var) for var in only_keys  ]
     only_keys = np.unique( only_keys )
 
-    # print( only_keys )
-    # if constants.PORTS_KEYWORD in yaml_content_dic  :
-    #     temp_ports_ls = yaml_content_dic[constants.PORTS_KEYWORD]
     if constants.PORTS_KEYWORD in only_keys: 
         vals_for_key  = [] 
         parser.getValsFromKey( yaml_content_dic, constants.PORTS_KEYWORD, vals_for_key )
-        temp_ports_ls = vals_for_key
+        temp_ports_ls =  vals_for_key
     elif constants.SSH_PORT_KEYWORD in only_keys:
         temp_ports_ls = [] 
         temp_ports_ls.append( [ { constants.SSH_PORT_KEYWORD  :  constants.SSH_DEFAULT_PORT_VAL } ] )
-    # print( temp_ports_ls )
     for temp_ports in temp_ports_ls:
-        for temp_port in temp_ports: 
-            # if( constants.PORT_KEYWORD in temp_port or constants.TARGET_PORT_KEYWORD in temp_port ) and ( constants.PROTOCOL_KEYWORD in temp_port ) : 
-            if( constants.PORT_KEYWORD in temp_port  ) and ( constants.PROTOCOL_KEYWORD in temp_port ) : 
-                port_value = temp_port[constants.PORT_KEYWORD] 
-                port_proto = temp_port[constants.PROTOCOL_KEYWORD]
+        if ( isinstance( temp_ports, list  ) ):
+            for temp_port in temp_ports: 
+                if( constants.PORT_KEYWORD in temp_port  ) and ( constants.PROTOCOL_KEYWORD in temp_port ) : 
+                    port_value = temp_port[constants.PORT_KEYWORD] 
+                    port_proto = temp_port[constants.PROTOCOL_KEYWORD]
 
-                if ( port_value == constants.HTTP_DEFAULT_PORT_VAL ) and ( port_proto == constants.HTTP_KEYWORD ) : 
-                    counter += 1 
-                    res_dic[counter] = ( port_value, port_proto )                                    
-                elif ( port_value == constants.HTTPS_DEFAULT_PORT_VAL ) and ( port_proto == constants.HTTPS_KEYWORD ) : 
-                    counter += 1 
-                    res_dic[counter] = ( port_value, port_proto )                                    
-                elif ( port_value == constants.SSH_DEFAULT_PORT_VAL ) and ( port_proto == constants.SSH_KEYWORD ) : 
-                    counter += 1 
-                    res_dic[counter] = ( port_value, port_proto )                                    
-            elif( constants.PORT_KEYWORD in temp_port ):
-                port_value = temp_port[constants.PORT_KEYWORD]
-                if( port_value == constants.MONGO_DEFAULT_PORT_VAL ): 
-                    counter += 1 
-                    res_dic[counter] = ( port_value, constants.MONGO_KEYWORD )                                    
-            elif( constants.CONTAINER_PORT_KEYWORD in temp_port ):
-                port_value = temp_port[constants.CONTAINER_PORT_KEYWORD]
-                if( port_value == constants.MONGO_DEFAULT_PORT_VAL ): 
-                    counter += 1 
-                    res_dic[counter] = ( port_value, constants.MONGO_KEYWORD )  
-            elif( constants.SSH_PORT_KEYWORD in temp_port ):
-                port_value = temp_port[constants.SSH_PORT_KEYWORD]
-                if( port_value == constants.SSH_DEFAULT_PORT_VAL ): 
-                    counter += 1 
-                    res_dic[counter] = ( port_value, constants.SSH_KEYWORD )  
+                    if ( port_value == constants.HTTP_DEFAULT_PORT_VAL ) and ( port_proto == constants.HTTP_KEYWORD ) : 
+                        counter += 1 
+                        res_dic[counter] = ( port_value, port_proto )                                    
+                    elif ( port_value == constants.HTTPS_DEFAULT_PORT_VAL ) and ( port_proto == constants.HTTPS_KEYWORD ) : 
+                        counter += 1 
+                        res_dic[counter] = ( port_value, port_proto )                                    
+                    elif ( port_value == constants.SSH_DEFAULT_PORT_VAL ) and ( port_proto == constants.SSH_KEYWORD ) : 
+                        counter += 1 
+                        res_dic[counter] = ( port_value, port_proto )                                    
+                elif( constants.PORT_KEYWORD in temp_port ):
+                    port_value = temp_port[constants.PORT_KEYWORD]
+                    if( port_value == constants.MONGO_DEFAULT_PORT_VAL ): 
+                        counter += 1 
+                        res_dic[counter] = ( port_value, constants.MONGO_KEYWORD )                                    
+                elif( constants.CONTAINER_PORT_KEYWORD in temp_port ):
+                    port_value = temp_port[constants.CONTAINER_PORT_KEYWORD]
+                    if( port_value == constants.MONGO_DEFAULT_PORT_VAL ): 
+                        counter += 1 
+                        res_dic[counter] = ( port_value, constants.MONGO_KEYWORD )  
+                elif( constants.SSH_PORT_KEYWORD in temp_port ):
+                    port_value = temp_port[constants.SSH_PORT_KEYWORD]
+                    if( port_value == constants.SSH_DEFAULT_PORT_VAL ): 
+                        counter += 1 
+                        res_dic[counter] = ( port_value, constants.SSH_KEYWORD )  
     # print(res_dic) 
     return res_dic 
 
@@ -449,7 +445,7 @@ def scanMultipleScript4AllTypes( dir2scan ):
         '''
         if(parser.checkIfWeirdYAML ( yml_  )  == False):   
             file_counter                                  = file_counter + 1   
-            six_res_lis, susp_coun                        = scanSingleScriptForAllTypes(yml_, org_path)
+            six_res_lis, susp_coun                        = scanSingleScriptForAllTypes(yml_, dir2scan)
             unam_coun, pass_coun, priv_coun, ip_addr_coun = 0, 0, 0, 0 
             http_coun, port_coun, emp_pwd_c, no_integ_cou = 0, 0, 0, 0    
             for tuple_of_dicts in six_res_lis:

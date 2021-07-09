@@ -1,0 +1,33 @@
+name: Build Taintible
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install necessary Python packages
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest
+        pip install requests
+        pip install pandas
+        pip install PyYAML
+        pip install numpy 
+        
+    - name: Run necessary tests 
+      run: |
+        python _TEST_DETECTION.py
+        python _TEST_PARSING.py 
+        python _TEST_GRAPH.py 
