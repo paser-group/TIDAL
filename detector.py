@@ -3,6 +3,7 @@ Akond Rahman
 July 01, 2021 
 Module to detect security weaknesses 
 '''
+from collections.abc import Iterable
 import parser 
 import constants 
 import graph 
@@ -30,34 +31,35 @@ def getDefaultPortCount( yaml_content_dic ):
     for temp_ports in temp_ports_ls:
         if ( isinstance( temp_ports, list  ) ):
             for temp_port in temp_ports: 
-                if( constants.PORT_KEYWORD in temp_port  ) and ( constants.PROTOCOL_KEYWORD in temp_port ) : 
-                    port_value = temp_port[constants.PORT_KEYWORD] 
-                    port_proto = temp_port[constants.PROTOCOL_KEYWORD]
+                if ( isinstance( temp_port, Iterable  ) ):                
+                    if( constants.PORT_KEYWORD in temp_port  ) and ( constants.PROTOCOL_KEYWORD in temp_port ) : 
+                        port_value = temp_port[constants.PORT_KEYWORD] 
+                        port_proto = temp_port[constants.PROTOCOL_KEYWORD]
 
-                    if ( port_value == constants.HTTP_DEFAULT_PORT_VAL ) and ( port_proto == constants.HTTP_KEYWORD ) : 
-                        counter += 1 
-                        res_dic[counter] = ( port_value, port_proto )                                    
-                    elif ( port_value == constants.HTTPS_DEFAULT_PORT_VAL ) and ( port_proto == constants.HTTPS_KEYWORD ) : 
-                        counter += 1 
-                        res_dic[counter] = ( port_value, port_proto )                                    
-                    elif ( port_value == constants.SSH_DEFAULT_PORT_VAL ) and ( port_proto == constants.SSH_KEYWORD ) : 
-                        counter += 1 
-                        res_dic[counter] = ( port_value, port_proto )                                    
-                elif( constants.PORT_KEYWORD in temp_port ):
-                    port_value = temp_port[constants.PORT_KEYWORD]
-                    if( port_value == constants.MONGO_DEFAULT_PORT_VAL ): 
-                        counter += 1 
-                        res_dic[counter] = ( port_value, constants.MONGO_KEYWORD )                                    
-                elif( constants.CONTAINER_PORT_KEYWORD in temp_port ):
-                    port_value = temp_port[constants.CONTAINER_PORT_KEYWORD]
-                    if( port_value == constants.MONGO_DEFAULT_PORT_VAL ): 
-                        counter += 1 
-                        res_dic[counter] = ( port_value, constants.MONGO_KEYWORD )  
-                elif( constants.SSH_PORT_KEYWORD in temp_port ):
-                    port_value = temp_port[constants.SSH_PORT_KEYWORD]
-                    if( port_value == constants.SSH_DEFAULT_PORT_VAL ): 
-                        counter += 1 
-                        res_dic[counter] = ( port_value, constants.SSH_KEYWORD )  
+                        if ( port_value == constants.HTTP_DEFAULT_PORT_VAL ) and ( port_proto == constants.HTTP_KEYWORD ) : 
+                            counter += 1 
+                            res_dic[counter] = ( port_value, port_proto )                                    
+                        elif ( port_value == constants.HTTPS_DEFAULT_PORT_VAL ) and ( port_proto == constants.HTTPS_KEYWORD ) : 
+                            counter += 1 
+                            res_dic[counter] = ( port_value, port_proto )                                    
+                        elif ( port_value == constants.SSH_DEFAULT_PORT_VAL ) and ( port_proto == constants.SSH_KEYWORD ) : 
+                            counter += 1 
+                            res_dic[counter] = ( port_value, port_proto )                                    
+                    elif( constants.PORT_KEYWORD in temp_port ):
+                        port_value = temp_port[constants.PORT_KEYWORD]
+                        if( port_value == constants.MONGO_DEFAULT_PORT_VAL ): 
+                            counter += 1 
+                            res_dic[counter] = ( port_value, constants.MONGO_KEYWORD )                                    
+                    elif( constants.CONTAINER_PORT_KEYWORD in temp_port ):
+                        port_value = temp_port[constants.CONTAINER_PORT_KEYWORD]
+                        if( port_value == constants.MONGO_DEFAULT_PORT_VAL ): 
+                            counter += 1 
+                            res_dic[counter] = ( port_value, constants.MONGO_KEYWORD )  
+                    elif( constants.SSH_PORT_KEYWORD in temp_port ):
+                        port_value = temp_port[constants.SSH_PORT_KEYWORD]
+                        if( port_value == constants.SSH_DEFAULT_PORT_VAL ): 
+                            counter += 1 
+                            res_dic[counter] = ( port_value, constants.SSH_KEYWORD )  
     # print(res_dic) 
     return res_dic 
 
@@ -448,6 +450,7 @@ def scanMultipleScript4AllTypes( dir2scan ):
             six_res_lis, susp_coun                        = scanSingleScriptForAllTypes(yml_, dir2scan)
             unam_coun, pass_coun, priv_coun, ip_addr_coun = 0, 0, 0, 0 
             http_coun, port_coun, emp_pwd_c, no_integ_cou = 0, 0, 0, 0    
+            print( yml_ + constants.WHITESPACE_SYMBOL + str( file_counter ) )
             for tuple_of_dicts in six_res_lis:
                 for dict_ in tuple_of_dicts:
                     if constants.RESULT_USERNAME == dict_[constants.WEAKNESS_KW]: 
@@ -466,7 +469,7 @@ def scanMultipleScript4AllTypes( dir2scan ):
                         emp_pwd_c    = emp_pwd_c + dict_[ constants.RESULT_TP_COUNT ]   
                     if constants.RESULT_NO_INTEG == dict_[constants.WEAKNESS_KW]: 
                         no_integ_cou = no_integ_cou + dict_[ constants.RESULT_TP_COUNT ]    
-            print( yml_ + constants.WHITESPACE_SYMBOL + str( file_counter ) )
+
             tup_ = ( dir2scan, yml_, susp_coun, unam_coun, pass_coun, priv_coun, ip_addr_coun, http_coun, port_coun, emp_pwd_c, no_integ_cou )
             all_content.append( tup_ ) 
     all_dir_yml_res = pd.DataFrame( all_content ) 
