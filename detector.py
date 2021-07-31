@@ -261,7 +261,7 @@ def getSecretCount(  yam_dict ):
     return res_lis
 
 
-def scanSingleScriptForAllTypes( script_path , org_dir ):
+def scanSingleScriptForAllTypes( script_path , org_dir, need_speed_flag ):
     yamL_ds  = parser.loadYAML( script_path  )
     six_res_final_list, susp_comments = [] , [] 
     http_res_dic, ip_res_dic,      empty_pwd_dic,  port_res_dic,   no_integ_dic, secret_dic_ls    = {}, {}, {}, {}, {}, []
@@ -297,20 +297,20 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
             We also need to do cross script taint tracking 
             '''
             # secret 
-            cross_uname_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[0])
-            cross_passw_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[1])
-            cross_prike_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[2]) 
+            cross_uname_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[0], need_speed_flag)
+            cross_passw_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[1], need_speed_flag)
+            cross_prike_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[2], need_speed_flag) 
             cross_secre_ls= [ cross_uname_di, cross_passw_di, cross_prike_di ] 
             # insecure HTTP 
-            cross_http_di = graph.getCrossReffs( org_dir, script_path, http_usage_di )
+            cross_http_di = graph.getCrossReffs( org_dir, script_path, http_usage_di, need_speed_flag )
             # invalid ip usage 
-            cross_inv_ip_d= graph.getCrossReffs( org_dir, script_path, inv_ip_use_di )    
+            cross_inv_ip_d= graph.getCrossReffs( org_dir, script_path, inv_ip_use_di, need_speed_flag )    
             # empty password usage 
-            cross_empt_p_d= graph.getCrossReffs( org_dir, script_path, emp_pwd_use_d )    
+            cross_empt_p_d= graph.getCrossReffs( org_dir, script_path, emp_pwd_use_d, need_speed_flag )    
             # cross port usage 
-            cross_port_p_d= graph.getCrossReffs( org_dir, script_path, port_use_dic )     
+            cross_port_p_d= graph.getCrossReffs( org_dir, script_path, port_use_dic, need_speed_flag )     
             # cross no integrity check usage 
-            cross_int_no_d= graph.getCrossReffs( org_dir, script_path, no_int_use_d )  
+            cross_int_no_d= graph.getCrossReffs( org_dir, script_path, no_int_use_d, need_speed_flag )  
 
             final_result_tuple = ( 
                                getSummaryWhenName( constants.RESULT_USERNAME,     secret_dic_ls[0],  cross_secre_ls[0], secret_use_ls[0]), 
@@ -351,20 +351,20 @@ def scanSingleScriptForAllTypes( script_path , org_dir ):
         We also need to do cross script taint tracking 
         '''
         # cross secret usage 
-        cross_uname_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[0])
-        cross_passw_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[1])
-        cross_prike_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[2])  
+        cross_uname_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[0], need_speed_flag)
+        cross_passw_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[1], need_speed_flag)
+        cross_prike_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[2], need_speed_flag)  
         cross_secre_ls= [ cross_uname_di, cross_passw_di, cross_prike_di ] 
         # cross http usage 
-        cross_http_di = graph.getCrossReffs( org_dir, script_path, http_usage_di )
+        cross_http_di = graph.getCrossReffs( org_dir, script_path, http_usage_di, need_speed_flag )
         # cross invalid ip usage 
-        cross_inv_ip_d= graph.getCrossReffs( org_dir, script_path, inv_ip_use_di )
+        cross_inv_ip_d= graph.getCrossReffs( org_dir, script_path, inv_ip_use_di, need_speed_flag )
         # cross empty password usage 
-        cross_empt_p_d= graph.getCrossReffs( org_dir, script_path, emp_pwd_use_d )
+        cross_empt_p_d= graph.getCrossReffs( org_dir, script_path, emp_pwd_use_d, need_speed_flag )
         # cross port usage 
-        cross_port_p_d= graph.getCrossReffs( org_dir, script_path, port_use_dic )
+        cross_port_p_d= graph.getCrossReffs( org_dir, script_path, port_use_dic, need_speed_flag )
         # cross no integrity check usage 
-        cross_int_no_d= graph.getCrossReffs( org_dir, script_path, no_int_use_d )
+        cross_int_no_d= graph.getCrossReffs( org_dir, script_path, no_int_use_d, need_speed_flag )
 
         final_result_tuple = ( 
                                getSummary( constants.RESULT_USERNAME,     secret_dic_ls[0],  cross_secre_ls[0], secret_use_ls[0] ), 
@@ -434,10 +434,11 @@ def getYAMLFiles(path_to_dir):
            full_p_file = os.path.join(root_, file_)
            if(os.path.exists(full_p_file)):
              if (full_p_file.endswith( constants.YML_EXTENSION  )  or full_p_file.endswith( constants.YAML_EXTENSION  )  ):
-               valid_.append(full_p_file)
+                if(parser.checkIfWeirdYAML ( full_p_file  )  == False):   
+                    valid_.append(full_p_file)
     return valid_ 
 
-def scanMultipleScript4AllTypes( dir2scan ):
+def scanMultipleScript4AllTypes( dir2scan , need4speed ):
     all_content   = [] 
     all_yml_files = getYAMLFiles(dir2scan)
     file_counter  = 0 
@@ -447,11 +448,11 @@ def scanMultipleScript4AllTypes( dir2scan ):
         '''
         if(parser.checkIfWeirdYAML ( yml_  )  == False):   
             file_counter                                  = file_counter + 1   
-            six_res_lis, susp_coun                        = scanSingleScriptForAllTypes(yml_, dir2scan)
+            six_res_lis, susp_coun                        = scanSingleScriptForAllTypes(yml_, dir2scan, need4speed )
             unam_coun, pass_coun, priv_coun, ip_addr_coun = 0, 0, 0, 0 
             http_coun, port_coun, emp_pwd_c, no_integ_cou = 0, 0, 0, 0    
-            print( yml_ + constants.WHITESPACE_SYMBOL + str( file_counter ) )
-            for tuple_of_dicts in six_res_lis:
+            print( yml_ + constants.WHITESPACE_SYMBOL + str( file_counter ) + constants.OUT_OF_STR + str( len(all_yml_files) ) )
+            for tuple_of_dicts in six_res_lis: 
                 for dict_ in tuple_of_dicts:
                     if constants.RESULT_USERNAME == dict_[constants.WEAKNESS_KW]: 
                         unam_coun    = unam_coun + dict_[ constants.RESULT_TP_COUNT ]

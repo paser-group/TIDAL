@@ -94,6 +94,7 @@ cross_no_inte_yaml3  = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-pe
 KEY_MISSING_MESSAGE  = ': A KEY TO EXIST !!!'
 cross_existence_key1 = 'vms_kss_os'
 cross_existence_key2 = 'content_sattools_url'
+NEED_FOR_SPEED_FLAG  = False 
 
 result_gen_script1   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/d34dh0r53@os-ansible-deployment/playbooks/roles/os_heat/files/templates/AWS_RDS_DBInstance.yaml'
 org_path             = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/'        

@@ -80,6 +80,7 @@ ANSIBLE_LOOKUP_KEYWORD       = 'lookup('
 WRONG_CROSS_KEYWORDS         = ['default(', 'defaults', 'default.', '_default', 'default_', '.default']
 
 
+OUT_OF_STR                   = ' OUT OF '
 DURATION_STRING              = 'Duration: {} minutes'
 TIME_FORMAT                  = '%Y-%m-%d %H:%M:%S'
 WEAKNESS_KW                  = 'WEAKNESS_TYPE'

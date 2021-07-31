@@ -156,7 +156,7 @@ def getDirFromScriptPath(s_path, org_dir):
     dir2search      = org_dir + script_src_root     
     return dir2search
 
-def getCrossReffs(org_dir, script_path, prelim_graph_dic):
+def getCrossReffs(org_dir, script_path, prelim_graph_dic, speedup_flag ):
     res_cnt = 0 
     res_dic = {} 
     for counter, tuple_ in prelim_graph_dic.items():
@@ -164,35 +164,42 @@ def getCrossReffs(org_dir, script_path, prelim_graph_dic):
         # print(key_lis)
         key_lis = np.unique( key_lis )
         if type_ == constants.SOURCE_TYPE_NON_PLAY:
-            dir2search      = getDirFromScriptPath( script_path, org_dir )
-            yamls_in_dir    = getYAMLFiles( dir2search )
-            for yaml_ in yamls_in_dir:
-                # print( script_path,  yaml_, key_lis  )
-                ya_di   = parser.loadYAML( yaml_ )
-                ya_vals = parser.getValuesRecursively( ya_di )
-                # print( ya_vals )
-                # print( key_lis )
-                for ya_va in ya_vals:
-                    if( isinstance( ya_va, str ) ):
-                        for key_ in key_lis:
-                            key_from_src = str( key_ )
-                            # if( constants.KATELLO_KEYWORD in key_from_src ):
-                            #     print( key_from_src, ya_va )
-                            '''
-                            keys will be refernced using `{{ var_name }}` format 
-                            '''
-                            if ( key_from_src in ya_va )  and ( constants.VAR_REFF_PATTERN in ya_va ) and ( constants.OTHER_VAR_REFF_PATTERN in ya_va ) and ( checkIfValidReff( key_from_src, ya_va ) ) :
-                                res_cnt += 1
+            if speedup_flag:
+                #TODO
+                print('SPEEDUP_ZONE')
+            else:
+                dir2search      = getDirFromScriptPath( script_path, org_dir )
+                '''
+                get YAMLs from directory of current YAML 
+                '''
+                yamls_in_dir    = getYAMLFiles( dir2search )
+                for yaml_ in yamls_in_dir:
+                    # print( script_path,  yaml_, key_lis  )
+                    ya_di   = parser.loadYAML( yaml_ )
+                    ya_vals = parser.getValuesRecursively( ya_di )
+                    # print( ya_vals )
+                    # print( key_lis )
+                    for ya_va in ya_vals:
+                        if( isinstance( ya_va, str ) ):
+                            for key_ in key_lis:
+                                key_from_src = str( key_ )
+                                # if( constants.KATELLO_KEYWORD in key_from_src ):
+                                #     print( key_from_src, ya_va )
                                 '''
-                                Structure of result dicts 
-                                key = counter : indicates use of the hard-coded value by a play , e.g. counter = 5 , means the value was used in 5 plays 
-                                values = (src_script, src_val, sink_script, sink_val)
+                                keys will be refernced using `{{ var_name }}` format 
                                 '''
-                                res_dic[ res_cnt ] = ( script_path, key_from_src, yaml_, ya_va  )
-                                # keyOfValList = parser.getKeysBasedOnValue(ya_di, ya_va)
-                                # print( yaml_,   ya_va, key_from_src , keyOfValList  )
-                                # if ( constants.PLAY_NAME_CONSTANT in keyOfValList ):
-                                #     print( yaml_,   ya_va, key_from_src , keyOfValList  )
+                                if ( key_from_src in ya_va )  and ( constants.VAR_REFF_PATTERN in ya_va ) and ( constants.OTHER_VAR_REFF_PATTERN in ya_va ) and ( checkIfValidReff( key_from_src, ya_va ) ) :
+                                    res_cnt += 1
+                                    '''
+                                    Structure of result dicts 
+                                    key = counter : indicates use of the hard-coded value by a play , e.g. counter = 5 , means the value was used in 5 plays 
+                                    values = (src_script, src_val, sink_script, sink_val)
+                                    '''
+                                    res_dic[ res_cnt ] = ( script_path, key_from_src, yaml_, ya_va  )
+                                    # keyOfValList = parser.getKeysBasedOnValue(ya_di, ya_va)
+                                    # print( yaml_,   ya_va, key_from_src , keyOfValList  )
+                                    # if ( constants.PLAY_NAME_CONSTANT in keyOfValList ):
+                                    #     print( yaml_,   ya_va, key_from_src , keyOfValList  )
     return res_dic 
 
 

@@ -21,7 +21,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_uname_d= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0])
+        cross_uname_d= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         self.assertEqual(oracle_value, len( cross_uname_d ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
 
@@ -31,7 +31,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1])
+        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         self.assertEqual(oracle_value, len( cross_pass_di ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
     def testCrossSecret3(self):     
@@ -40,7 +40,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_keys_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[2])
+        cross_keys_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[2], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         self.assertEqual(oracle_value, len( cross_keys_di ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
     def testCrossSecret4(self):     
@@ -49,7 +49,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_uname_d= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0])
+        cross_uname_d= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         uname_vars   = cross_uname_d.values()
         unames       = np.unique( [ name[1] for name  in uname_vars ]  ) 
         # print( unames )
@@ -61,7 +61,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_uname_d= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0])
+        cross_uname_d= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         uname_vars   = cross_uname_d.values()
         unames       = np.unique( [ name[1] for name  in uname_vars ]  ) 
         self.assertEqual(  oracle_value , len(unames)  ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
@@ -72,7 +72,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_uname_d= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0])
+        cross_uname_d= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         uname_vars   = cross_uname_d.values()
         unames       = np.unique( [ name[1] for name  in uname_vars ]  ) 
         self.assertTrue( _TEST_CONSTANTS.RHSM_USER  in unames ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
@@ -83,7 +83,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_uname_d= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0])
+        cross_uname_d= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         uname_vars   = cross_uname_d.values()
         files        = np.unique( [ name[2] for name  in uname_vars ]  ) 
         self.assertEqual(  oracle_value, len( files ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
@@ -95,7 +95,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1])
+        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         dic_values   = cross_pass_di.values() 
         files        = np.unique( [ name[2] for name in dic_values ] )
         self.assertEqual(oracle_value, len( files ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
@@ -106,7 +106,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1])
+        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         dic_values   = cross_pass_di.values() 
         var_names    = np.unique( [ name[1] for name in dic_values ] )
         # print( var_names )
@@ -118,7 +118,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_keys_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[2])
+        cross_keys_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[2], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         dic_values   = cross_keys_di.values() 
         # print( dic_values )
         files        = np.unique( [ name[2] for name in dic_values ] )
@@ -129,7 +129,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1])
+        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         dic_values   = cross_pass_di.values() 
         file_names   = np.unique( [ name[2] for name in dic_values ] )
         self.assertTrue( _TEST_CONSTANTS.cross_existence_yaml1 not  in file_names ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.FILE_MISSING_MESSAGE  )         
@@ -139,7 +139,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1])
+        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         dic_values   = cross_pass_di.values() 
         file_names   = np.unique( [ name[2] for name in dic_values ] )
         self.assertTrue( _TEST_CONSTANTS.cross_existence_yaml2 in file_names ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.FILE_MISSING_MESSAGE  )         
@@ -149,7 +149,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1])
+        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         dic_values   = cross_pass_di.values() 
         file_names   = np.unique( [ name[2] for name in dic_values ] )
         self.assertTrue( _TEST_CONSTANTS.cross_existence_yaml3 in file_names ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.FILE_MISSING_MESSAGE  )         
@@ -159,7 +159,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1])
+        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         dic_values   = cross_pass_di.values() 
         file_names   = np.unique( [ name[2] for name in dic_values ] )
         self.assertFalse( _TEST_CONSTANTS.cross_existence_yam10 in file_names ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.FILE_MISSING_MESSAGE  )         
@@ -169,7 +169,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1])
+        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         dic_values   = cross_pass_di.values() 
         file_names   = np.unique( [ name[2] for name in dic_values ] )
         self.assertTrue( _TEST_CONSTANTS.cross_existence_yaml9 in file_names ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.FILE_MISSING_MESSAGE  )         
@@ -179,7 +179,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1])
+        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         dic_values   = cross_pass_di.values() 
         file_names   = np.unique( [ name[2] for name in dic_values ] )
         self.assertTrue( _TEST_CONSTANTS.cross_existence_yaml8 in file_names ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.FILE_MISSING_MESSAGE  )         
@@ -189,7 +189,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1])
+        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         dic_values   = cross_pass_di.values() 
         file_names   = np.unique( [ name[2] for name in dic_values ] )
         self.assertTrue( _TEST_CONSTANTS.cross_existence_yaml7 in file_names ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.FILE_MISSING_MESSAGE  )         
@@ -199,7 +199,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_unam_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0])
+        cross_unam_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         dic_values   = cross_unam_di.values() 
         file_names   = np.unique( [ name[2] for name in dic_values ] )
         self.assertTrue( _TEST_CONSTANTS.cross_existence_yaml6 in file_names ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.FILE_MISSING_MESSAGE  )         
@@ -209,7 +209,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_unam_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0])
+        cross_unam_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         dic_values   = cross_unam_di.values() 
         file_names   = np.unique( [ name[2] for name in dic_values ] )
         self.assertTrue( _TEST_CONSTANTS.cross_existence_yaml5 in file_names ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.FILE_MISSING_MESSAGE  )      
@@ -219,7 +219,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_unam_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0])
+        cross_unam_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         dic_values   = cross_unam_di.values() 
         file_names   = np.unique( [ name[2] for name in dic_values ] )
         self.assertTrue( _TEST_CONSTANTS.cross_existence_yaml4 in file_names ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.FILE_MISSING_MESSAGE  )              
@@ -230,7 +230,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_uname_d= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0])
+        cross_uname_d= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[0], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         self.assertEqual(  oracle_value, len( cross_uname_d ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
     def testCrossSecret22(self):     
@@ -239,7 +239,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_uname_d= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[2])
+        cross_uname_d= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[2], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         self.assertEqual(  oracle_value, len( cross_uname_d ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
     def testCrossSecret23(self):     
@@ -248,7 +248,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_pass_d = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1])
+        cross_pass_d = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         self.assertEqual(  oracle_value, len( cross_pass_d ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
     def testCrossSecret24(self):     
@@ -256,7 +256,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
-        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1])
+        cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         dic_values   = cross_pass_di.values() 
         # print( cross_pass_di )
         file_names   = np.unique( [ name[2] for name in dic_values ] )
@@ -271,7 +271,7 @@ class TestCrossHTTPGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         http_resr_dic= detector.getInsecureHTTPCount( yaml_as_dict )
         http_use_dict= graph.getPlayUsage( yaml_as_dict,  http_resr_dic )
-        cross_http_d = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  http_use_dict )
+        cross_http_d = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  http_use_dict, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG )
         self.assertEqual(oracle_value, len( cross_http_d ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
 
@@ -280,7 +280,7 @@ class TestCrossHTTPGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         http_resr_dic= detector.getInsecureHTTPCount( yaml_as_dict )
         http_use_dict= graph.getPlayUsage( yaml_as_dict,  http_resr_dic )
-        cross_http_d = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  http_use_dict )
+        cross_http_d = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  http_use_dict, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG )
         files        = np.unique( [ x_[2] for x_ in cross_http_d.values() ] )
         self.assertTrue( _TEST_CONSTANTS.cross_existence_yam12 in files  ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.FILE_MISSING_MESSAGE  ) 
 
@@ -290,7 +290,7 @@ class TestCrossHTTPGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         http_resr_dic= detector.getInsecureHTTPCount( yaml_as_dict )
         http_use_dict= graph.getPlayUsage( yaml_as_dict,  http_resr_dic )
-        cross_http_d = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  http_use_dict )
+        cross_http_d = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  http_use_dict, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG )
         values       = cross_http_d.values()  
         keys         = np.unique( [t_[1] for t_ in values ] )
         # print(keys)
@@ -302,7 +302,7 @@ class TestCrossHTTPGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         http_resr_dic= detector.getInsecureHTTPCount( yaml_as_dict )
         http_use_dict= graph.getPlayUsage( yaml_as_dict,  http_resr_dic )
-        cross_http_d = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  http_use_dict )
+        cross_http_d = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  http_use_dict, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG )
         values       = cross_http_d.values()  
         keys         = np.unique( [t_[1] for t_ in values ] )
         self.assertTrue( _TEST_CONSTANTS.cross_existence_key2 in keys  ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.KEY_MISSING_MESSAGE  ) 
@@ -312,7 +312,7 @@ class TestCrossHTTPGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         http_resr_dic= detector.getInsecureHTTPCount( yaml_as_dict )
         http_use_dict= graph.getPlayUsage( yaml_as_dict,  http_resr_dic )
-        cross_http_d = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  http_use_dict )
+        cross_http_d = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  http_use_dict, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG )
         values       = cross_http_d.values()  
         files        = np.unique( [t_[2] for t_ in values ] )
         self.assertFalse( _TEST_CONSTANTS.cross_existence_yam13 in files  ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.KEY_MISSING_MESSAGE  ) 
@@ -326,7 +326,7 @@ class TestCrossInvalidIPGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         ip_resr_dic  = detector.getInvalidIPCount ( yaml_as_dict )
         ip_use_dict  = graph.getPlayUsage( yaml_as_dict,  ip_resr_dic )
-        cross_ip_dic = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  ip_use_dict )
+        cross_ip_dic = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  ip_use_dict, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG )
         self.assertEqual(oracle_value, len( cross_ip_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
 
@@ -336,7 +336,7 @@ class TestCrossInvalidIPGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         ip_resr_dic  = detector.getInvalidIPCount ( yaml_as_dict )
         ip_use_dict  = graph.getPlayUsage( yaml_as_dict,  ip_resr_dic )
-        cross_ip_dic = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  ip_use_dict )
+        cross_ip_dic = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  ip_use_dict, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG )
         files        = np.unique( [c_[2] for c_ in  cross_ip_dic.values() ] )
         self.assertEqual(oracle_value, len( files ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
@@ -351,7 +351,7 @@ class TestCrossInvalidIPGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         ip_resr_dic  = detector.getInvalidIPCount ( yaml_as_dict )
         ip_use_dict  = graph.getPlayUsage( yaml_as_dict,  ip_resr_dic )
-        cross_ip_dic = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  ip_use_dict )
+        cross_ip_dic = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  ip_use_dict, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG )
         self.assertEqual(oracle_value, len( cross_ip_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
 class TestCrossEmptyPassGraphs( unittest.TestCase ):
@@ -362,7 +362,7 @@ class TestCrossEmptyPassGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         emp_pass_dic = detector.getEmptyPasswordCount( yaml_as_dict )
         emp_use_dict = graph.getPlayUsage( yaml_as_dict,  emp_pass_dic )
-        cross_emp_dic= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  emp_use_dict )
+        cross_emp_dic= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  emp_use_dict, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG )
         self.assertEqual(oracle_value, len( cross_emp_dic ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
 
@@ -372,7 +372,7 @@ class TestCrossEmptyPassGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         emp_pass_dic = detector.getEmptyPasswordCount( yaml_as_dict )
         emp_use_dict = graph.getPlayUsage( yaml_as_dict,  emp_pass_dic )
-        cross_emp_dic= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  emp_use_dict )
+        cross_emp_dic= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  emp_use_dict, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG )
         files        = np.unique( [ t_[2] for t_ in cross_emp_dic.values() ] )
         self.assertEqual(oracle_value, len( files ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
@@ -385,7 +385,7 @@ class TestCrossDefaultPortGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         port_cnt_dic = detector.getDefaultPortCount( yaml_as_dict )
         port_use_dict= graph.getPlayUsage( yaml_as_dict,  port_cnt_dic )
-        cross_port_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  port_use_dict )
+        cross_port_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  port_use_dict, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG )
         self.assertEqual(oracle_value, len( cross_port_di ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
     def testCrossDefaultPort2(self):     
@@ -393,7 +393,7 @@ class TestCrossDefaultPortGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         port_cnt_dic = detector.getDefaultPortCount( yaml_as_dict )
         port_use_dict= graph.getPlayUsage( yaml_as_dict,  port_cnt_dic )
-        cross_port_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  port_use_dict )
+        cross_port_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  port_use_dict , _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         files        = np.unique( [x_[2] for x_ in cross_port_di.values()] )
         self.assertTrue( _TEST_CONSTANTS.cross_existence_yaml9 not  in files ,  _TEST_CONSTANTS._common_error_string + _TEST_CONSTANTS.FILE_MISSING_MESSAGE  ) 
 
@@ -406,7 +406,7 @@ class TestCrossNoIntegrityGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         inte_cnt_dic = detector.getIntegViolationCount ( yaml_as_dict )
         inte_use_dict= graph.getNoIntegPlayUsage(  inte_cnt_dic )
-        cross_inte_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  inte_use_dict )
+        cross_inte_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  inte_use_dict, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG )
         self.assertEqual(oracle_value, len( cross_inte_di ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
     def testCrossNoIntegrity2(self):     
@@ -415,7 +415,7 @@ class TestCrossNoIntegrityGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         inte_cnt_dic = detector.getIntegViolationCount ( yaml_as_dict )
         inte_use_dict= graph.getNoIntegPlayUsage(  inte_cnt_dic )
-        cross_inte_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  inte_use_dict )
+        cross_inte_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  inte_use_dict , _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         self.assertEqual(oracle_value, len( cross_inte_di ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
     def testCrossNoIntegrity3(self):     
@@ -424,7 +424,7 @@ class TestCrossNoIntegrityGraphs( unittest.TestCase ):
         yaml_as_dict = parser.loadYAML( scriptName ) 
         inte_cnt_dic = detector.getIntegViolationCount ( yaml_as_dict )
         inte_use_dict= graph.getNoIntegPlayUsage(  inte_cnt_dic )
-        cross_inte_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  inte_use_dict )
+        cross_inte_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  inte_use_dict , _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         self.assertEqual(oracle_value, len( cross_inte_di ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
 
@@ -433,13 +433,13 @@ class TestResultCollecton( unittest.TestCase ):
     def testResultGen(self):     
         oracle_value = 2
         scriptName   = _TEST_CONSTANTS.result_gen_script1
-        res_         = detector.scanSingleScriptForAllTypes( scriptName , _TEST_CONSTANTS.org_path)
+        res_         = detector.scanSingleScriptForAllTypes( scriptName , _TEST_CONSTANTS.org_path, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         self.assertEqual(oracle_value, len( res_ ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
     def testResultGenSuspComment(self):     
         oracle_value = 0
         scriptName   = _TEST_CONSTANTS.result_gen_script1
-        res_         = detector.scanSingleScriptForAllTypes( scriptName , _TEST_CONSTANTS.org_path)
+        res_         = detector.scanSingleScriptForAllTypes( scriptName , _TEST_CONSTANTS.org_path, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         # the second element is numbe rof suspcious comments 
         self.assertEqual(oracle_value,  res_[1]  ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
@@ -447,7 +447,7 @@ class TestResultCollecton( unittest.TestCase ):
         oracle_val1  = 1
         oracle_val2  = 0
         scriptName   = _TEST_CONSTANTS.result_gen_port_scri
-        res_         = detector.scanSingleScriptForAllTypes( scriptName , _TEST_CONSTANTS.org_path)
+        res_         = detector.scanSingleScriptForAllTypes( scriptName , _TEST_CONSTANTS.org_path, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         res_others   = res_[0][0]
         for weakness_dic in res_others:
             if _TEST_CONSTANTS.RESULT_DEFAULT_PORT in weakness_dic:
@@ -458,7 +458,7 @@ class TestResultCollecton( unittest.TestCase ):
         oracle_val2  = 251
         oracle_val3  = 3 
         scriptName   = _TEST_CONSTANTS.result_gen_script2
-        res_         = detector.scanSingleScriptForAllTypes( scriptName , _TEST_CONSTANTS.org_path)
+        res_         = detector.scanSingleScriptForAllTypes( scriptName , _TEST_CONSTANTS.org_path, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         res_others   = res_[0][0]
         for weakness_dic in res_others:
             if _TEST_CONSTANTS.RESULT_USERNAME in weakness_dic:
@@ -473,7 +473,7 @@ class TestResultCollecton( unittest.TestCase ):
         oracle_val2  = 1
         oracle_val3  = 10
         scriptName   = _TEST_CONSTANTS.result_gen_no_integ
-        res_         = detector.scanSingleScriptForAllTypes( scriptName , _TEST_CONSTANTS.org_path)
+        res_         = detector.scanSingleScriptForAllTypes( scriptName , _TEST_CONSTANTS.org_path, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         res_others   = res_[0][0]
         self.assertEqual(  oracle_val3, len( res_[0] ), _TEST_CONSTANTS._common_error_string + str (oracle_val3)  )
         for weakness_dic in res_others:
