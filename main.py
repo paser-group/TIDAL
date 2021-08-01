@@ -15,17 +15,16 @@ def giveTimeStamp():
 
 if __name__=='__main__':
         t1              = time.monotonic()
-        speedup_flag    = False  
+        speedup_flag    = False ## Abandoning speedup experiments  
 
-        org_dire        = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/test-ansi/'        
-        OUTPUT_FILE_CSV = '/Users/arahman/Documents/OneDriveWingUp/OneDrive-TennesseeTechUniversity/Research/IaC/FixFalsePositive/output-taintible/V3_TEST_TP_OUTPUT.csv'
+        # org_dire        = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/test-ansi/'        
+        # OUTPUT_FILE_CSV = '/Users/arahman/Documents/OneDriveWingUp/OneDrive-TennesseeTechUniversity/Research/IaC/FixFalsePositive/output-taintible/V4_TEST_TP_OUTPUT.csv'
 
-
-        # org_dire        = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ostk-ansi/'        
-        # OUTPUT_FILE_CSV = '/Users/arahman/Documents/OneDriveWingUp/OneDrive-TennesseeTechUniversity/Research/IaC/FixFalsePositive/output-taintible/V2_OSTK_TP_OUTPUT.csv'
+        org_dire        = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ostk-ansi/'        
+        OUTPUT_FILE_CSV = '/Users/arahman/Documents/OneDriveWingUp/OneDrive-TennesseeTechUniversity/Research/IaC/FixFalsePositive/output-taintible/V4_OSTK_TP_OUTPUT.csv'
 
         # org_dire        = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/'        
-        # OUTPUT_FILE_CSV = '/Users/arahman/Documents/OneDriveWingUp/OneDrive-TennesseeTechUniversity/Research/IaC/FixFalsePositive/output-taintible/V2_GHUB_TP_OUTPUT.csv'
+        # OUTPUT_FILE_CSV = '/Users/arahman/Documents/OneDriveWingUp/OneDrive-TennesseeTechUniversity/Research/IaC/FixFalsePositive/output-taintible/V3_GHUB_TP_OUTPUT.csv'
 
         file_res_df      =  detector.scanMultipleScript4AllTypes( org_dire , speedup_flag )
         file_res_df.to_csv( OUTPUT_FILE_CSV, header= constants.CSV_HEADER , index=False, encoding= constants.CSV_ENCODING )     

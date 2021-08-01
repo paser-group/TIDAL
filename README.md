@@ -2,14 +2,14 @@
 
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
 
-[![Actions Status](https://github.com/paser-group/KubeSec/workflows/Build%20Taintible/badge.svg)](https://github.com/Build%20Taintible/actions)
+[![Actions Status](https://github.com/paser-group/Taintible/workflows/Build%20Taintible/badge.svg)](https://github.com/Build%20Taintible/actions) 
 
 
 # Taintible: Taint Tracking for Security Analysis of Ansible Scripts 
 
 ## Collaborators 
 
-Akond Rahman (Lead)  and Farhat Lamia Barsha 
+Akond Rahman (Lead), Chris Parnin, and Farhat Lamia Barsha 
 
 ### Details 
 
