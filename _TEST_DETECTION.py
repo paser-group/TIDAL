@@ -219,25 +219,27 @@ class TestTPSecretDetection( unittest.TestCase ):
         self.assertEqual(oracle_value, lis_dic[1][4][0]  ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
     def testTP_PrivateKey1(self):     
-        oracle_value = 2
+        oracle_value = 1
         scriptName   = _TEST_CONSTANTS.tp_secret_yaml
         dic_         = parser.loadYAML( scriptName ) 
         lis_dic      = detector.getSecretCount ( dic_  )
         self.assertEqual(oracle_value, len(lis_dic[2] ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
     def testTP_PrivateKey2(self):     
-        oracle_value = _TEST_CONSTANTS.var_pattern_str
+        oracle_value = _TEST_CONSTANTS.changeme_str
         scriptName   = _TEST_CONSTANTS.tp_secret_yaml
         dic_         = parser.loadYAML( scriptName ) 
         lis_dic      = detector.getSecretCount ( dic_  )
-        self.assertTrue(oracle_value in lis_dic[2][1][-1]  ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
+        # print(lis_dic)
+        self.assertTrue(oracle_value in lis_dic[1][1][-1]  ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
     def testTP_PrivateKey3(self):     
         oracle_value = _TEST_CONSTANTS.sample_var_name 
         scriptName   = _TEST_CONSTANTS.tp_secret_yaml
         dic_         = parser.loadYAML( scriptName ) 
         lis_dic      = detector.getSecretCount ( dic_  )
-        self.assertEqual(oracle_value, lis_dic[2][2][0]  ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )    
+        # print(lis_dic)
+        self.assertEqual(oracle_value, lis_dic[2][1][0]  ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  )    
 
     def testTP_SecretDictList1(self):     
         oracle_value = _TEST_CONSTANTS.root_user_str 

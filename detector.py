@@ -216,7 +216,7 @@ def getUsernameCount( yaml_dict ):
             for unfiltered_config_val in val_holder:
                 if isinstance( unfiltered_config_val, str ):
                     config_val = sanitizeConfigVals( unfiltered_config_val )
-                    if (isinstance(config_val, str  ) ) and ( len(config_val) > 0  ) : 
+                    if (isinstance(config_val, str  ) ) and ( len(config_val) > 0  ) and ( config_val != constants.VALID_CONFIG_DEFAULT ) and ( constants.VAR_REFF_PATTERN not in config_val ) and (constants.OTHER_VAR_REFF_PATTERN not in config_val): 
                         counter += 1 
                         res_dic[ counter ] = ( k_, config_val )
     # print( res_dic )
@@ -237,7 +237,7 @@ def getPasswordCount( yaml_dict ):
             for unfiltered_config_val in val_holder:
                 if isinstance( unfiltered_config_val, str ):
                     config_val = sanitizeConfigVals( unfiltered_config_val )
-                    if (isinstance(config_val, str  ) ) and ( len(config_val) > 0  ) : 
+                    if (isinstance(config_val, str  ) ) and ( len(config_val) > 0  ) and ( config_val != constants.VALID_CONFIG_DEFAULT ) and ( constants.VAR_REFF_PATTERN not in config_val ) and (constants.OTHER_VAR_REFF_PATTERN not in config_val): 
                         counter += 1 
                         res_dic[ counter ] = ( k_, config_val )
     # print( res_dic )
@@ -254,13 +254,13 @@ def getPrivKeyCount( yaml_dict ):
     only_keys = [ sanitizeConfigKeys(var) for var in only_keys  ]
     only_keys = np.unique( only_keys )        
     for k_  in only_keys :
-        if ( any( z_ in k_ for z_ in constants.VALID_PRIVATE_STRS ) ) and ( any( t_ in k_ for t_ in constants.VALID_KEY_STRS ) ) and ( any( x_ in k_ for x_ in constants.INVALID_KEY_STRS ) == False ) : 
+        if ( any( z_ in k_ for z_ in constants.VALID_PRIVATE_STRS ) ) and ( any( t_ in k_ for t_ in constants.VALID_KEY_STRS ) ) and ( any( x_ in k_ for x_ in constants.INVALID_KEY_STRS ) == False )  : 
             val_holder = [] 
             parser.getValsFromKey(yaml_dict, k_, val_holder ) 
             for unfiltered_config_val in val_holder:
                 if isinstance( unfiltered_config_val, str ):
                     config_val = sanitizeConfigVals( unfiltered_config_val )
-                    if (isinstance(config_val, str  ) ) and ( len(config_val) > 0  ) : 
+                    if (isinstance(config_val, str  ) ) and ( len(config_val) > 0  ) and ( config_val != constants.VALID_CONFIG_DEFAULT ) and ( constants.VAR_REFF_PATTERN not in config_val ) and (constants.OTHER_VAR_REFF_PATTERN not in config_val) : 
                         counter += 1 
                         res_dic[ counter ] = ( k_, config_val )
     # print( res_dic )
@@ -417,7 +417,7 @@ def scanSingleScriptForAllTypes( script_path , org_dir, need_speed_flag ):
     6 types of weaknesses, the second eleemnt of the tuple is the number of susp. comments 
     third element of tuple is weak_play_list that stores what weaknesses map to what plays 
     '''
-    print( final_result_tuple[2]  )
+    print( final_result_tuple[1]  )
     final_per_script_result = ( final_result_tuple , len( susp_comments ), weak_play_list )
 
     return final_per_script_result 
@@ -674,7 +674,7 @@ if __name__=='__main__':
         test_secret_fp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/d34dh0r53@os-ansible-deployment/playbooks/roles/os_heat/files/templates/AWS_RDS_DBInstance.yaml'
         test_secret_tp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/conf/satperf.yaml'
         test_ports            = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/laincloud@lain/playbooks/roles/config/defaults/main.yaml'
-        test_secret_name      = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/jlund@streisand/global_vars/default-site.yml'
+        test_secret_name      = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/debops@debops/roles/debops.kibana/defaults/main.yml'
         test_http_fp_yaml     = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-tools/openshift/installer/atomic-openshift-3.11/roles/openshift_examples/files/examples/latest/xpaas-templates/rhpam70-prod-immutable-kieserver.yaml'
         
         org_path              = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/'        

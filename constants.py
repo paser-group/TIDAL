@@ -56,9 +56,9 @@ REPO_STRS_V2                 = ['mirrors.fedoraproject.org', 'repos.', 'releases
 UNALLOWED_HTTP_STRS          = ['.org', '.edu', HTTPS_PATTERN ] + REPO_STRS_V1 
 
 VALID_PASSWORD_STRS          = ['password', 'passwd', 'pass', 'rootpw']
-INVALID_PASSWORD_STRS        = ['vault_', 'vaulted_'] 
+INVALID_PASSWORD_STRS        = ['vault_', 'vaulted_', 'crypt_scheme', 'passenger']  
 VALID_USERNAME_STRS          = ['user']
-INVALID_USERNAME_STRS        = ['become_user', 'remote_user', 'vault_', 'vaulted_', 'file']
+INVALID_USERNAME_STRS        = ['become_user', 'remote_user', 'vault_', 'vaulted_', 'file', '_changing_enabled']
 VALID_PRIVATE_STRS           = ['pvt', 'priv']
 VALID_KEY_STRS               = ['cert', 'key', 'rsa', 'secret', 'ssl']
 INVALID_KEY_STRS             = ['vault_', 'vaulted_', 'public']  
