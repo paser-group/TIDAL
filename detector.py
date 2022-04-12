@@ -10,16 +10,16 @@ import graph
 import numpy as np 
 import pandas as pd 
 import os 
-WHITESPACE = ' '
+
 
 def filterVal(str_):
 
-    msg_commit = str_.replace('\r', WHITESPACE)
-    msg_commit = msg_commit.replace('\n', WHITESPACE)
-    msg_commit = msg_commit.replace(',',  WHITESPACE)    
-    msg_commit = msg_commit.replace('\t', WHITESPACE)
-    msg_commit = msg_commit.replace('&',  WHITESPACE)  
-    msg_commit = msg_commit.replace('=',  WHITESPACE)
+    msg_commit = str_.replace('\r', constants.WHITESPACE_SYMBOL)
+    msg_commit = msg_commit.replace('\n', constants.WHITESPACE_SYMBOL)
+    msg_commit = msg_commit.replace(',',  constants.WHITESPACE_SYMBOL)    
+    msg_commit = msg_commit.replace('\t', constants.WHITESPACE_SYMBOL)
+    msg_commit = msg_commit.replace('&',  constants.WHITESPACE_SYMBOL)  
+    msg_commit = msg_commit.replace('=',  constants.WHITESPACE_SYMBOL)
     msg_commit = msg_commit.lower()         
 
     return msg_commit
@@ -291,6 +291,8 @@ def scanSingleScriptForAllTypes( script_path , org_dir, need_speed_flag ):
             empty_pwd_dic= getEmptyPasswordCount( dic )
             no_integ_dic = getIntegViolationCount ( dic )
             secret_dic_ls= getSecretCount( dic )
+            # print( secret_dic_ls ) 
+            # print( '='*100 )                    
             '''
             Once done with pattern matching we need to check if instances are 
             used by a play 
@@ -353,8 +355,8 @@ def scanSingleScriptForAllTypes( script_path , org_dir, need_speed_flag ):
         empty_pwd_dic    = getEmptyPasswordCount( yamL_ds )  
         no_integ_dic     = getIntegViolationCount ( yamL_ds )              
         secret_dic_ls    = getSecretCount( yamL_ds )
-        print( secret_dic_ls ) 
-        print( '*'*100 )        
+        # print( secret_dic_ls ) 
+        # print( '*'*100 )        
         '''
         Once done with pattern matching we need to check if instances are 
         used by a play 
@@ -417,7 +419,7 @@ def scanSingleScriptForAllTypes( script_path , org_dir, need_speed_flag ):
     6 types of weaknesses, the second eleemnt of the tuple is the number of susp. comments 
     third element of tuple is weak_play_list that stores what weaknesses map to what plays 
     '''
-    print( final_result_tuple[1]  )
+    # print( final_result_tuple[0]  )
     final_per_script_result = ( final_result_tuple , len( susp_comments ), weak_play_list )
 
     return final_per_script_result 
@@ -463,6 +465,7 @@ def getSummary( weakness_type,  detcted_dict , cross_script_dict , used_dict  ):
     # print( cross_script_dict )
     # print( keys_in_cross_dict )
     ### this counts the keys with weaknesses  that are in the source script 
+    ### not adding used dict , as we are only cosnidering cross script 
     tp_cnt                                      = len( np.unique( keys_in_cross_dict ) ) 
     '''
     This is a hack. We are noticing raw_count to be lower than that true positive count. 
@@ -497,20 +500,24 @@ def getSummaryWhenName( weakness_type,  detcted_dict , cross_script_dict , used_
     dic2ret                                     = {} 
     tp_cnt                                      = 0 
     dic2ret[ constants.RESULT_TYPE  ]           = weakness_type 
-    dic2ret[constants.RESULT_RAW_COUNT]         = len( detcted_dict )
+    raw_cnt                                     = len( detcted_dict )
+    dic2ret[constants.RESULT_RAW_COUNT]         = raw_cnt
     keys_in_cross_dict                          = [ z_[1] for z_ in   cross_script_dict.values() ] 
+    ###  adding used dict , as we are  cosnidering cross script and within script 
     tp_cnt                                      = len( np.unique( keys_in_cross_dict ) ) + len( used_dict )
+    '''
+    This is a hack. We are noticing raw_count to be lower than that true positive count. 
+    So is raw count >= 1 and true positive count >=1 and raw_count > tp_count , 
+    then we need to reset true positive count to raw count 
+    '''
+    if (tp_cnt > raw_cnt) and (raw_cnt >= 1) and (tp_cnt >= 1 ) : 
+        tp_cnt = raw_cnt     
     dic2ret[constants.RESULT_TP_COUNT]          = tp_cnt
     dic2ret[constants.RESULT_CROSS_SCRIPT_DICT] = cross_script_dict  
     affceted_play_count                         = len( used_dict ) + len( cross_script_dict )
     dic2ret[constants.AFFECT_PLAY_COUNT]        = affceted_play_count      
     dic2ret[constants.USED_DICT_KEY]            = used_dict
-    # if( len(detcted_dict) > 0  ):
-    #     print( dic2ret )  
-    #
-    # print(weakness_type)
-    # print(used_dict)
-    # print(cross_script_dict)   
+
     return dic2ret
 
 
@@ -674,7 +681,7 @@ if __name__=='__main__':
         test_secret_fp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/d34dh0r53@os-ansible-deployment/playbooks/roles/os_heat/files/templates/AWS_RDS_DBInstance.yaml'
         test_secret_tp_yaml   = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/redhat-performance@satellite-performance/conf/satperf.yaml'
         test_ports            = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/laincloud@lain/playbooks/roles/config/defaults/main.yaml'
-        test_secret_name      = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/debops@debops/roles/debops.kibana/defaults/main.yml'
+        test_secret_name      = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/debops@debops/roles/debops.netbox/defaults/main.yml'
         test_http_fp_yaml     = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/openshift@openshift-tools/openshift/installer/atomic-openshift-3.11/roles/openshift_examples/files/examples/latest/xpaas-templates/rhpam70-prod-immutable-kieserver.yaml'
         
         org_path              = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ghub-ansi/'        
