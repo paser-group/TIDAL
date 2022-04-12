@@ -21,6 +21,7 @@ def getPlayUsage( full_dic, weakness_dic ):
     parser.getKeyRecursively(full_dic, all_dict_keys)
     real_keys     = [z_[0] for z_ in all_dict_keys]
     src_key       = constants.NULL_SYMBOL 
+    # print(weakness_dic) 
     for _, val_ in weakness_dic.items():
         # SSH dicts are stored in tuples to keep tack of the protocol 
         if (isinstance( val_, tuple ) ):

@@ -96,6 +96,7 @@ class TestCrossSecretGraphs( unittest.TestCase ):
         secret_dic_ls= detector.getSecretCount( yaml_as_dict ) 
         secret_use_ls= [ graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[0]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[1]), graph.getSecretPlayUsage(yaml_as_dict, secret_dic_ls[2]) ]                
         cross_pass_di= graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName, secret_use_ls[1], _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
+        # print(cross_pass_di)
         dic_values   = cross_pass_di.values() 
         files        = np.unique( [ name[2] for name in dic_values ] )
         self.assertEqual(oracle_value, len( files ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
@@ -272,6 +273,7 @@ class TestCrossHTTPGraphs( unittest.TestCase ):
         http_resr_dic= detector.getInsecureHTTPCount( yaml_as_dict )
         http_use_dict= graph.getPlayUsage( yaml_as_dict,  http_resr_dic )
         cross_http_d = graph.getCrossReffs(_TEST_CONSTANTS.org_dir, scriptName,  http_use_dict, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG )
+        # print( cross_http_d )
         self.assertEqual(oracle_value, len( cross_http_d ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
 
 
@@ -431,7 +433,7 @@ class TestCrossNoIntegrityGraphs( unittest.TestCase ):
 class TestResultCollecton( unittest.TestCase ):
 
     def testResultGen(self):     
-        oracle_value = 2
+        oracle_value = 3
         scriptName   = _TEST_CONSTANTS.result_gen_script1
         res_         = detector.scanSingleScriptForAllTypes( scriptName , _TEST_CONSTANTS.org_path, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         self.assertEqual(oracle_value, len( res_ ) ,  _TEST_CONSTANTS._common_error_string + str(oracle_value)  ) 
@@ -471,7 +473,7 @@ class TestResultCollecton( unittest.TestCase ):
     def testResultNoInteg(self):     
         oracle_val1  = 1
         oracle_val2  = 1
-        oracle_val3  = 10
+        oracle_val3  = 8
         scriptName   = _TEST_CONSTANTS.result_gen_no_integ
         res_         = detector.scanSingleScriptForAllTypes( scriptName , _TEST_CONSTANTS.org_path, _TEST_CONSTANTS.NEED_FOR_SPEED_FLAG)
         res_others   = res_[0][0]

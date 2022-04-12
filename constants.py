@@ -53,15 +53,15 @@ ALLOWABLE_TYPES              = [ bool, int, str ]
 ALLOWABLE_INSECURE_HTTP_STRS = [ HTTP_PATTERN ] 
 REPO_STRS_V1                 = ['.dmg', '.rpm', '.tzr.gz', '.tgz', '.zip', '.tar', '.rar']
 REPO_STRS_V2                 = ['mirrors.fedoraproject.org', 'repos.', 'releases/', '_repository_base']
-UNALLOWED_HTTP_STRS          = ['.org', '.edu'] + REPO_STRS_V1 
+UNALLOWED_HTTP_STRS          = ['.org', '.edu', HTTPS_PATTERN ] + REPO_STRS_V1 
 
 VALID_PASSWORD_STRS          = ['password', 'passwd', 'pass', 'rootpw']
 INVALID_PASSWORD_STRS        = ['vault_', 'vaulted_'] 
 VALID_USERNAME_STRS          = ['user']
-INVALID_USERNAME_STRS        = ['become_user', 'remote_user', 'vault_', 'vaulted_']
+INVALID_USERNAME_STRS        = ['become_user', 'remote_user', 'vault_', 'vaulted_', 'file']
 VALID_PRIVATE_STRS           = ['pvt', 'priv']
 VALID_KEY_STRS               = ['cert', 'key', 'rsa', 'secret', 'ssl']
-INVALID_KEY_STRS             = ['vault_', 'vaulted_'] 
+INVALID_KEY_STRS             = ['vault_', 'vaulted_', 'public']  
 
 INTEG_KW_LIST                = ['gpgcheck', 'check_sha', 'checksum', 'checksha'] 
 NO_KEYWORD                   = 'no'
@@ -101,4 +101,7 @@ RESULT_TYPE                  = 'WEAKNESS_TYPE'
 AFFECT_PLAY_COUNT            = 'AFFECTED_PLAY_COUNT'
 ANALYZING_PRINT_MESSAGE      = 'ANALYZING ... '
 DEFAULT_CONFIG_KEY           = 'DEFAULT_KEY'
+USED_DICT_KEY                = 'USED_DICT'
 CSV_HEADER                   = ['DIR', 'YAML_FULL_PATH', 'SUSP_COUNT', RESULT_USERNAME, RESULT_PASSWORD, RESULT_PRIVATE_KEY, RESULT_INVALID_IP , RESULT_INSECURE_HTTP, RESULT_DEFAULT_PORT, RESULT_EMPTY_PWD, RESULT_NO_INTEG]
+ORIG_WEAKNESS_HEADER         = ['DIR', 'YAML_FULL_PATH', RESULT_USERNAME, RESULT_PASSWORD, RESULT_PRIVATE_KEY, RESULT_INVALID_IP , RESULT_INSECURE_HTTP, RESULT_DEFAULT_PORT, RESULT_EMPTY_PWD, RESULT_NO_INTEG]
+PLAY_WEAKNESS_HEADER         = ['WEAKNESS_TYPE', 'AFFECETD_SCRIPT_PATH',  'KEY', 'VALUE']
