@@ -283,66 +283,67 @@ def scanSingleScriptForAllTypes( script_path , org_dir, need_speed_flag ):
 
     if( isinstance(yamL_ds, list) ):
         for dic in yamL_ds:
-            play_status  = constants.SOURCE_TYPE_NON_PLAY 
-            # print( dic )
-            port_res_dic = getDefaultPortCount( dic )
-            ip_res_dic   = getInvalidIPCount( dic )
-            http_res_dic = getInsecureHTTPCount( dic )
-            empty_pwd_dic= getEmptyPasswordCount( dic )
-            no_integ_dic = getIntegViolationCount ( dic )
-            secret_dic_ls= getSecretCount( dic )
-            # print( secret_dic_ls ) 
-            # print( '='*100 )                    
-            '''
-            Once done with pattern matching we need to check if instances are 
-            used by a play 
-            '''
-            http_usage_di= graph.getPlayUsage( dic, http_res_dic )
-            # print( http_usage_di ) 
-            # print( '='*100 )
-            inv_ip_use_di= graph.getPlayUsage( dic, ip_res_dic )     
-            # print( inv_ip_use_di )         
-            emp_pwd_use_d= graph.getPlayUsage( dic, empty_pwd_dic )  
-            port_use_dic = graph.getPlayUsage( dic, port_res_dic )
-            no_int_use_d = graph.getNoIntegPlayUsage(  no_integ_dic )
-            # print( no_integ_dic  )
-            # print( no_int_use_d )
-            secret_use_ls= [ graph.getSecretPlayUsage(dic, secret_dic_ls[0]), graph.getSecretPlayUsage(dic, secret_dic_ls[1]), graph.getSecretPlayUsage(dic, secret_dic_ls[2]) ]
-            if ( constants.PLAY_NAME_CONSTANT in dic ):
-                play_status = constants.SOURCE_TYPE_PLAY 
-            '''
-            We also need to do cross script taint tracking 
-            '''
-            # secret 
-            cross_uname_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[0], need_speed_flag)
-            cross_passw_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[1], need_speed_flag)
-            cross_prike_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[2], need_speed_flag) 
-            cross_secre_ls= [ cross_uname_di, cross_passw_di, cross_prike_di ] 
-            # insecure HTTP 
-            cross_http_di = graph.getCrossReffs( org_dir, script_path, http_usage_di, need_speed_flag )
-            # print( cross_http_di )
-            # print('='*100)
-            # invalid ip usage 
-            cross_inv_ip_d= graph.getCrossReffs( org_dir, script_path, inv_ip_use_di, need_speed_flag )    
-            # empty password usage 
-            cross_empt_p_d= graph.getCrossReffs( org_dir, script_path, emp_pwd_use_d, need_speed_flag )    
-            # cross port usage 
-            cross_port_p_d= graph.getCrossReffs( org_dir, script_path, port_use_dic, need_speed_flag )     
-            # cross no integrity check usage 
-            cross_int_no_d= graph.getCrossReffs( org_dir, script_path, no_int_use_d, need_speed_flag )  
-            # each entry in the tuple is a dict : the dict has the following keys: weakness type, raw count, tp count, 
-            # cross script dict if the weakness is used in a different script, 
-            # affected play count  , and used dict i.e. if the weakness is used in the same script 
-            final_result_tuple = ( 
-                               getSummaryWhenName( constants.RESULT_USERNAME,     secret_dic_ls[0],  cross_secre_ls[0], secret_use_ls[0]), 
-                               getSummaryWhenName( constants.RESULT_PASSWORD,     secret_dic_ls[1],  cross_secre_ls[1], secret_use_ls[1]), 
-                               getSummaryWhenName( constants.RESULT_PRIVATE_KEY,  secret_dic_ls[2],  cross_secre_ls[2], secret_use_ls[2]),                                
-                               getSummaryWhenName( constants.RESULT_INSECURE_HTTP,http_res_dic    ,  cross_http_di    , http_usage_di  ),   
-                               getSummaryWhenName( constants.RESULT_INVALID_IP,   ip_res_dic      ,  cross_inv_ip_d   , inv_ip_use_di  ),   
-                               getSummaryWhenName( constants.RESULT_EMPTY_PWD,    empty_pwd_dic   ,  cross_empt_p_d   , emp_pwd_use_d  ),   
-                               getSummaryWhenName( constants.RESULT_DEFAULT_PORT, port_res_dic    ,  cross_port_p_d   , port_use_dic  ),   
-                               getSummaryWhenName( constants.RESULT_NO_INTEG,     no_integ_dic    ,  cross_int_no_d   , no_int_use_d  ),   
-                            )
+            if ( isinstance( dic, dict ) ):
+                play_status  = constants.SOURCE_TYPE_NON_PLAY 
+                # print( dic )
+                port_res_dic = getDefaultPortCount( dic )
+                ip_res_dic   = getInvalidIPCount( dic )
+                http_res_dic = getInsecureHTTPCount( dic )
+                empty_pwd_dic= getEmptyPasswordCount( dic )
+                no_integ_dic = getIntegViolationCount ( dic )
+                secret_dic_ls= getSecretCount( dic )
+                # print( secret_dic_ls ) 
+                # print( '='*100 )                    
+                '''
+                Once done with pattern matching we need to check if instances are 
+                used by a play 
+                '''
+                http_usage_di= graph.getPlayUsage( dic, http_res_dic )
+                # print( http_usage_di ) 
+                # print( '='*100 )
+                inv_ip_use_di= graph.getPlayUsage( dic, ip_res_dic )     
+                # print( inv_ip_use_di )         
+                emp_pwd_use_d= graph.getPlayUsage( dic, empty_pwd_dic )  
+                port_use_dic = graph.getPlayUsage( dic, port_res_dic )
+                no_int_use_d = graph.getNoIntegPlayUsage(  no_integ_dic )
+                # print( no_integ_dic  )
+                # print( no_int_use_d )
+                secret_use_ls= [ graph.getSecretPlayUsage(dic, secret_dic_ls[0]), graph.getSecretPlayUsage(dic, secret_dic_ls[1]), graph.getSecretPlayUsage(dic, secret_dic_ls[2]) ]
+                if ( constants.PLAY_NAME_CONSTANT in dic ):
+                    play_status = constants.SOURCE_TYPE_PLAY 
+                '''
+                We also need to do cross script taint tracking 
+                '''
+                # secret 
+                cross_uname_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[0], need_speed_flag)
+                cross_passw_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[1], need_speed_flag)
+                cross_prike_di= graph.getCrossReffs(org_dir, script_path, secret_use_ls[2], need_speed_flag) 
+                cross_secre_ls= [ cross_uname_di, cross_passw_di, cross_prike_di ] 
+                # insecure HTTP 
+                cross_http_di = graph.getCrossReffs( org_dir, script_path, http_usage_di, need_speed_flag )
+                # print( cross_http_di )
+                # print('='*100)
+                # invalid ip usage 
+                cross_inv_ip_d= graph.getCrossReffs( org_dir, script_path, inv_ip_use_di, need_speed_flag )    
+                # empty password usage 
+                cross_empt_p_d= graph.getCrossReffs( org_dir, script_path, emp_pwd_use_d, need_speed_flag )    
+                # cross port usage 
+                cross_port_p_d= graph.getCrossReffs( org_dir, script_path, port_use_dic, need_speed_flag )     
+                # cross no integrity check usage 
+                cross_int_no_d= graph.getCrossReffs( org_dir, script_path, no_int_use_d, need_speed_flag )  
+                # each entry in the tuple is a dict : the dict has the following keys: weakness type, raw count, tp count, 
+                # cross script dict if the weakness is used in a different script, 
+                # affected play count  , and used dict i.e. if the weakness is used in the same script 
+                final_result_tuple = ( 
+                                getSummaryWhenName( constants.RESULT_USERNAME,     secret_dic_ls[0],  cross_secre_ls[0], secret_use_ls[0]), 
+                                getSummaryWhenName( constants.RESULT_PASSWORD,     secret_dic_ls[1],  cross_secre_ls[1], secret_use_ls[1]), 
+                                getSummaryWhenName( constants.RESULT_PRIVATE_KEY,  secret_dic_ls[2],  cross_secre_ls[2], secret_use_ls[2]),                                
+                                getSummaryWhenName( constants.RESULT_INSECURE_HTTP,http_res_dic    ,  cross_http_di    , http_usage_di  ),   
+                                getSummaryWhenName( constants.RESULT_INVALID_IP,   ip_res_dic      ,  cross_inv_ip_d   , inv_ip_use_di  ),   
+                                getSummaryWhenName( constants.RESULT_EMPTY_PWD,    empty_pwd_dic   ,  cross_empt_p_d   , emp_pwd_use_d  ),   
+                                getSummaryWhenName( constants.RESULT_DEFAULT_PORT, port_res_dic    ,  cross_port_p_d   , port_use_dic  ),   
+                                getSummaryWhenName( constants.RESULT_NO_INTEG,     no_integ_dic    ,  cross_int_no_d   , no_int_use_d  ),   
+                                )
 
             
 
@@ -425,28 +426,29 @@ def scanSingleScriptForAllTypes( script_path , org_dir, need_speed_flag ):
     return final_per_script_result 
 def getPlayNamePerWeakness(tuple_of_dicts):
     ls2ret = []
-
-    for dict_ in tuple_of_dicts:
-            weak_type =  dict_[ constants.RESULT_TYPE   ]
-            used_dict =  dict_[ constants.USED_DICT_KEY ] 
-            cross_dic =  dict_[ constants.RESULT_CROSS_SCRIPT_DICT ] 
-            weak_cnt  =  dict_[constants.RESULT_TP_COUNT]
-            if weak_cnt > 0: 
-                # print(used_dict) 
-                for prop_count, values in cross_dic.items(): 
-                    propagated_value  = values[-1]
-                    propagated_script = values[-2]
-                    # print( propagated_script )
-                    ya_di   = parser.loadYAML( propagated_script )
-                    keyOfValList = parser.getKeysBasedOnValue(ya_di, propagated_value)
-                    # print(keyOfValList) 
-                    # print(  len(keyOfValList) )
-                    #we will take the last 2 keys that are affected by the weakness 
-                    # expecting key of value list to have newlines and special characters 
-                    filtered_val = filterVal( keyOfValList[-1]   )
-                    if ( len(keyOfValList) > 1 ): 
-                        ls2ret.append( ( weak_type, propagated_script,  keyOfValList[-2], filtered_val )  )
-                    # print('='*25)
+    if ( isinstance( tuple_of_dicts , tuple) ) :
+        if ( len(tuple_of_dicts) > 0 ): 
+            for dict_ in tuple_of_dicts:
+                    weak_type =  dict_[ constants.RESULT_TYPE   ]
+                    used_dict =  dict_[ constants.USED_DICT_KEY ] 
+                    cross_dic =  dict_[ constants.RESULT_CROSS_SCRIPT_DICT ] 
+                    weak_cnt  =  dict_[constants.RESULT_TP_COUNT]
+                    if weak_cnt > 0: 
+                        # print(used_dict) 
+                        for prop_count, values in cross_dic.items(): 
+                            propagated_value  = values[-1]
+                            propagated_script = values[-2]
+                            # print( propagated_script )
+                            ya_di   = parser.loadYAML( propagated_script )
+                            keyOfValList = parser.getKeysBasedOnValue(ya_di, propagated_value)
+                            # print(keyOfValList) 
+                            # print(  len(keyOfValList) )
+                            #we will take the last 2 keys that are affected by the weakness 
+                            # expecting key of value list to have newlines and special characters 
+                            filtered_val = filterVal( keyOfValList[-1]   )
+                            if ( len(keyOfValList) > 1 ): 
+                                ls2ret.append( ( weak_type, propagated_script,  keyOfValList[-2], filtered_val )  )
+                            # print('='*25)
     return ls2ret
 
 
@@ -574,41 +576,50 @@ def scanMultipleScript4AllTypes( dir2scan , need4speed ):
         Need to filter out `.github/workflows.yml files`  
         '''
         if(parser.checkIfWeirdYAML ( yml_  )  == False):   
+            '''
+            Handle encoding errors 
+            '''
+            yml_     = yml_.encode(constants.CSV_ENCODING, constants.REPLACE_KEYWORD).decode(constants.CSV_ENCODING)
+            dir2scan = dir2scan.encode(constants.CSV_ENCODING, constants.REPLACE_KEYWORD).decode(constants.CSV_ENCODING)
+
             file_counter                                  = file_counter + 1   
             tuple_of_dicts, susp_coun  , weak_play_map       = scanSingleScriptForAllTypes(yml_, dir2scan, need4speed )
             unam_coun, pass_coun, priv_coun, ip_addr_cou = 0, 0, 0, 0 
             http_coun, port_coun, emp_pwd_c, integ_cou = 0, 0, 0, 0    
             print( yml_ + constants.WHITESPACE_SYMBOL + str( file_counter ) + constants.OUT_OF_STR + str( len(all_yml_files) ) )
 
-            uname_dict = tuple_of_dicts[0]
-            unam_coun  = uname_dict[ constants.RESULT_TP_COUNT ]
+            if (isinstance( tuple_of_dicts , tuple ) ): 
+                if (len(tuple_of_dicts)  > 0): 
 
-            passw_dict = tuple_of_dicts[1]
-            pass_coun  = passw_dict[ constants.RESULT_TP_COUNT ]
+                    uname_dict = tuple_of_dicts[0]
+                    unam_coun  = uname_dict[ constants.RESULT_TP_COUNT ]
 
-            privk_dict = tuple_of_dicts[2]
-            priv_coun  = priv_coun + privk_dict[ constants.RESULT_TP_COUNT ]
+                    passw_dict = tuple_of_dicts[1]
+                    pass_coun  = passw_dict[ constants.RESULT_TP_COUNT ]
 
-            ihttp_dict = tuple_of_dicts[3]
-            http_coun  = ihttp_dict[ constants.RESULT_TP_COUNT ]  
+                    privk_dict = tuple_of_dicts[2]
+                    priv_coun  = priv_coun + privk_dict[ constants.RESULT_TP_COUNT ]
 
-            invai_dict = tuple_of_dicts[4]
-            ip_addr_cou= invai_dict[ constants.RESULT_TP_COUNT ] 
+                    ihttp_dict = tuple_of_dicts[3]
+                    http_coun  = ihttp_dict[ constants.RESULT_TP_COUNT ]  
 
-            empty_dict = tuple_of_dicts[5]
-            emp_pwd_c  = empty_dict[ constants.RESULT_TP_COUNT ]   
+                    invai_dict = tuple_of_dicts[4]
+                    ip_addr_cou= invai_dict[ constants.RESULT_TP_COUNT ] 
 
-            dport_dict = tuple_of_dicts[6]
-            port_coun  = dport_dict[constants.RESULT_TP_COUNT]
+                    empty_dict = tuple_of_dicts[5]
+                    emp_pwd_c  = empty_dict[ constants.RESULT_TP_COUNT ]   
 
-            integ_dict = tuple_of_dicts[7]
-            integ_cou  = integ_dict[ constants.RESULT_TP_COUNT ]  
+                    dport_dict = tuple_of_dicts[6]
+                    port_coun  = dport_dict[constants.RESULT_TP_COUNT]
 
-            '''
-            TODO
-            '''
-            orig_weakness_tuple  = getOriginalWeaknessCount( dir2scan, yml_, tuple_of_dicts )
-            orig_content.append( orig_weakness_tuple )
+                    integ_dict = tuple_of_dicts[7]
+                    integ_cou  = integ_dict[ constants.RESULT_TP_COUNT ]  
+
+                    '''
+                    TODO
+                    '''
+                    orig_weakness_tuple  = getOriginalWeaknessCount( dir2scan, yml_, tuple_of_dicts )
+                    orig_content.append( orig_weakness_tuple )
             '''
             TODO: play names 
             '''
@@ -692,10 +703,11 @@ if __name__=='__main__':
 
 
         # org_dire              = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/ostk-ansi/'        
-        # org_dire              = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/test-ansi/'        
-        # lol = scanMultipleScript4AllTypes( org_dire , False ) 
+        org_dire              = '/Users/arahman/PRIOR_NCSU/SECU_REPOS/test-ansi/'        
+        all_dir_res , orig_weak_df, weak_play_df = scanMultipleScript4AllTypes( org_dire , False ) 
+
         # print( lol.head() )
         # print( lol.shape )
-        # OUTPUT_FILE_CSV = '/Users/arahman/Documents/OneDriveWingUp/OneDrive-TennesseeTechUniversity/Research/IaC/FixFalsePositive/output-taintible/V1_TEST_TP_OUTPUT.csv'
+        # OUTPUT_FILE_CSV = '/Users/arahman/Documents/OneDriveWingUp/OneDrive-TennesseeTechUniversity/Research/IaC/FixFalsePositive/Content-Taintible/output-taintible/V5_TEST_TP_OUTPUT.csv'
         # lol.to_csv( OUTPUT_FILE_CSV, header= constants.CSV_HEADER , index=False, encoding= constants.CSV_ENCODING ) 
         

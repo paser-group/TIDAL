@@ -6,6 +6,7 @@ July 01, 2021
 
 import yaml 
 import constants 
+import os  
 
 def checkIfWeirdYAML(yaml_script):
     '''
@@ -21,11 +22,12 @@ def loadYAML( script_ ):
     returns a dict or  a list of dicts 
     '''
     dict2ret = {}
-    with open(script_, constants.FILE_READ_FLAG  ) as yml_content :
-        try:
-            dict2ret =   yaml.safe_load(yml_content) 
-        except yaml.YAMLError as exc:
-            print( constants.NULL_SYMBOL  )    
+    if ( os.path.exists( script_ ) ):
+        with open(script_, constants.FILE_READ_FLAG  ) as yml_content :
+            try:
+                dict2ret =   yaml.safe_load(yml_content) 
+            except yaml.YAMLError as exc:
+                print( constants.NULL_SYMBOL  )    
     return dict2ret 
 
 def getKeyRecursively(  dict_, list2hold,  depth_ = 0  ) :
