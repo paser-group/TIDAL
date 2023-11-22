@@ -5,16 +5,16 @@
 [![Actions Status](https://github.com/paser-group/Taintible/workflows/Build%20Taintible/badge.svg)](https://github.com/Build%20Taintible/actions) 
 
 
-# Taintible: Taint Tracking for Security Analysis of Ansible Scripts 
+# TIDAL: Task Infection Detector for Ansible Scripts 
 
 ## Collaborators 
 
-Akond Rahman (Lead), Chris Parnin, and Farhat Lamia Barsha 
+Akond Rahman (Lead), Dibyendu Brinto Bose, Yue Zhang, and Rahul Pandita  
 
 ### Details 
 
 Building a taint tracking tool that follows the flow of data like hard-coded password in Ansible scripts.  
-More details coming soon. 
+The derived flow will be used to track the flow of a weakness into an Ansible task. 
 
 
 
